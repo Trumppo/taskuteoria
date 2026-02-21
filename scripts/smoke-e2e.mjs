@@ -2,11 +2,13 @@ import { spawn } from "node:child_process";
 import { setTimeout as sleep } from "node:timers/promises";
 
 const baseUrl = "http://127.0.0.1:4323";
+const basePath = process.env.SMOKE_BASE_PATH ?? "/taskuteoria";
+const withBase = (path) => `${basePath}${path}`.replace(/\/{2,}/g, "/");
 const requiredRoutes = [
-  { path: "/", contains: "TaskuTeoria" },
-  { path: "/harjoittele/", contains: "Nuottien tunnistus" },
-  { path: "/kuuntele/", contains: "Kuuntelutehtavat" },
-  { path: "/kirjasto/", contains: "Teoriakirjasto" },
+  { path: withBase("/"), contains: "TaskuTeoria" },
+  { path: withBase("/harjoittele/"), contains: "Nuottien tunnistus" },
+  { path: withBase("/kuuntele/"), contains: "Kuuntelutehtavat" },
+  { path: withBase("/kirjasto/"), contains: "Teoriakirjasto" },
 ];
 
 const preview = spawn("npm", ["run", "preview", "--", "--host", "127.0.0.1", "--port", "4323"], {
@@ -52,4 +54,3 @@ try {
 } finally {
   preview.kill("SIGTERM");
 }
-

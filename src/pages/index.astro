@@ -1,5 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+const base = import.meta.env.BASE_URL;
+const withBase = (path: string) => new URL(path, `https://taskuteoria.local${base}`).pathname;
 ---
 
 <BaseLayout title="TaskuTeoria" active="harjoittele">
@@ -7,8 +9,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     <h1>TaskuTeoria</h1>
     <p>Staattinen, mobiiliin optimoitu musiikinteorian harjoittelusovellus. Harjoittele 5-10 min paivassa.</p>
     <div class="grid">
-      <a class="btn" href="/harjoittele">Jatka harjoittelua</a>
-      <a class="btn ghost" href="/asetukset">Asetukset</a>
+      <a class="btn" href={withBase("harjoittele")}>Jatka harjoittelua</a>
+      <a class="btn ghost" href={withBase("asetukset")}>Asetukset</a>
     </div>
   </section>
 
@@ -23,10 +25,10 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     <p class="small" id="listening-accuracy">Kuuntelutarkkuus: 0 %</p>
     <p class="small" id="weakest">Heikoin osa-alue: Ei tarpeeksi dataa</p>
     <div class="grid">
-      <a class="btn ghost" href="/harjoittele">Nuotit</a>
-      <a class="btn ghost" href="/kuuntele">Intervallit</a>
-      <a class="btn ghost" href="/kortit">Flashcards</a>
-      <a class="btn ghost" href="/polku">14 paivan polku</a>
+      <a class="btn ghost" href={withBase("harjoittele")}>Nuotit</a>
+      <a class="btn ghost" href={withBase("kuuntele")}>Intervallit</a>
+      <a class="btn ghost" href={withBase("kortit")}>Flashcards</a>
+      <a class="btn ghost" href={withBase("polku")}>14 paivan polku</a>
     </div>
   </section>
 

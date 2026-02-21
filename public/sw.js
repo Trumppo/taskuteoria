@@ -1,16 +1,19 @@
-const CACHE_VERSION = "taskuteoria-v2";
-const OFFLINE_URL = "/offline.html";
+const CACHE_VERSION = "taskuteoria-v3";
+const scope = new URL(self.registration.scope);
+const basePath = scope.pathname.endsWith("/") ? scope.pathname : `${scope.pathname}/`;
+const withBase = (path) => new URL(path, scope).pathname;
+const OFFLINE_URL = withBase("offline.html");
 const PRECACHE_URLS = [
-  "/",
-  "/index.html",
-  "/harjoittele/",
-  "/polku/",
-  "/kortit/",
-  "/kuuntele/",
-  "/kirjasto/",
-  "/asetukset/",
-  "/manifest.webmanifest",
-  "/icon.svg",
+  basePath,
+  withBase("index.html"),
+  withBase("harjoittele/"),
+  withBase("polku/"),
+  withBase("kortit/"),
+  withBase("kuuntele/"),
+  withBase("kirjasto/"),
+  withBase("asetukset/"),
+  withBase("manifest.webmanifest"),
+  withBase("icon.svg"),
   OFFLINE_URL,
 ];
 

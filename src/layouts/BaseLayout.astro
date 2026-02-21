@@ -7,13 +7,15 @@ interface Props {
 }
 
 const { title, active = "" } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const withBase = (path: string) => new URL(path, `https://taskuteoria.local${base}`).pathname;
 
 const nav = [
-  { href: "/harjoittele", label: "Harjoittele", key: "harjoittele" },
-  { href: "/polku", label: "Polku", key: "polku" },
-  { href: "/kortit", label: "Kortit", key: "kortit" },
-  { href: "/kuuntele", label: "Kuuntele", key: "kuuntele" },
-  { href: "/kirjasto", label: "Kirjasto", key: "kirjasto" },
+  { href: withBase("harjoittele"), label: "Harjoittele", key: "harjoittele" },
+  { href: withBase("polku"), label: "Polku", key: "polku" },
+  { href: withBase("kortit"), label: "Kortit", key: "kortit" },
+  { href: withBase("kuuntele"), label: "Kuuntele", key: "kuuntele" },
+  { href: withBase("kirjasto"), label: "Kirjasto", key: "kirjasto" },
 ];
 ---
 
@@ -24,7 +26,7 @@ const nav = [
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="TaskuTeoria - staattinen mobiilioppiminen musiikin teoriaan" />
     <meta name="theme-color" content="#0b6e4f" />
-    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="manifest" href={withBase("manifest.webmanifest")} />
     <title>{title}</title>
   </head>
   <body>
@@ -37,8 +39,9 @@ const nav = [
       ))}
     </nav>
     <script>
+      const swPath = `${import.meta.env.BASE_URL}sw.js`;
       if ("serviceWorker" in navigator) {
-        window.addEventListener("load", () => navigator.serviceWorker.register("/sw.js"));
+        window.addEventListener("load", () => navigator.serviceWorker.register(swPath));
       }
     </script>
   </body>
