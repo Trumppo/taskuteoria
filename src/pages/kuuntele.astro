@@ -1,0 +1,40 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Kuuntele | TaskuTeoria" active="kuuntele">
+  <section class="card">
+    <h1>Kuuntelutehtavat</h1>
+    <p>Harjoittele intervalleja, sointuja ja perusmetronomia synteettisella aanella.</p>
+  </section>
+
+  <section class="card grid">
+    <button class="btn" id="i2" type="button">Soita sekunti</button>
+    <button class="btn" id="i5" type="button">Soita kvintti</button>
+    <button class="btn" id="maj" type="button">Soita duurisointu</button>
+    <button class="btn" id="min" type="button">Soita mollisointu</button>
+    <button class="btn ghost" id="metro" type="button">Metronomi 90 BPM</button>
+    <button class="btn ghost" id="stop" type="button">Pysayta</button>
+  </section>
+
+  <script type="module">
+    import { playInterval, playChord, playMetronome } from "../lib/audio/synth.ts";
+
+    let stopMetro = null;
+
+    document.getElementById("i2").addEventListener("click", () => playInterval(60, 2, false));
+    document.getElementById("i5").addEventListener("click", () => playInterval(60, 7, false));
+    document.getElementById("maj").addEventListener("click", () => playChord(60, "major"));
+    document.getElementById("min").addEventListener("click", () => playChord(60, "minor"));
+
+    document.getElementById("metro").addEventListener("click", () => {
+      if (stopMetro) stopMetro();
+      stopMetro = playMetronome(90, "4/4");
+    });
+
+    document.getElementById("stop").addEventListener("click", () => {
+      if (stopMetro) stopMetro();
+      stopMetro = null;
+    });
+  </script>
+</BaseLayout>

@@ -1,0 +1,48 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import deck from "../data/notes.json";
+---
+
+<BaseLayout title="Kortit | TaskuTeoria" active="kortit">
+  <section class="card">
+    <h1>Flashcards</h1>
+    <p>Tiesin / En tiennyt -malli. Toistovaly tallennetaan localStorageen.</p>
+    <h2 id="front">{deck[0].front}</h2>
+    <p id="back" class="small" hidden>{deck[0].back}</p>
+  </section>
+  <section class="card grid">
+    <button id="show" type="button" class="btn ghost">Nayta vastaus</button>
+    <button id="knew" type="button" class="btn">Tiesin</button>
+    <button id="didnt" type="button" class="btn ghost">En tiennyt</button>
+  </section>
+
+  <script type="module">
+    import { reviewCard } from "../lib/srs.ts";
+
+    const deck = JSON.parse('{JSON.stringify(deck)}');
+    let i = 0;
+    const front = document.getElementById("front");
+    const back = document.getElementById("back");
+
+    function render() {
+      const card = deck[i % deck.length];
+      front.textContent = card.front;
+      back.textContent = card.back;
+      back.hidden = true;
+    }
+
+    document.getElementById("show").addEventListener("click", () => (back.hidden = false));
+    document.getElementById("knew").addEventListener("click", () => {
+      reviewCard(deck[i % deck.length].id, true);
+      i += 1;
+      render();
+    });
+    document.getElementById("didnt").addEventListener("click", () => {
+      reviewCard(deck[i % deck.length].id, false);
+      i += 1;
+      render();
+    });
+
+    render();
+  </script>
+</BaseLayout>
