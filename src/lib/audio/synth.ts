@@ -1,5 +1,7 @@
 let ctx: AudioContext | null = null;
 let master: GainNode | null = null;
+const MAX_VOICES = 6;
+const activeVoices: Array<{ osc: OscillatorNode; stopAt: number }> = [];
 
 function ensureContext(): AudioContext {
   if (!ctx) {
@@ -7,6 +9,9 @@ function ensureContext(): AudioContext {
     master = ctx.createGain();
     master.gain.value = 0.18;
     master.connect(ctx.destination);
+  }
+  if (ctx.state === "suspended") {
+    void ctx.resume();
   }
   return ctx;
 }
@@ -28,6 +33,28 @@ function env(gain: GainNode, start: number, dur: number): void {
   gain.gain.exponentialRampToValueAtTime(0.0001, start + dur);
 }
 
+function pruneVoices(now: number): void {
+  for (let i = activeVoices.length - 1; i >= 0; i -= 1) {
+    if (activeVoices[i].stopAt <= now) {
+      activeVoices.splice(i, 1);
+    }
+  }
+}
+
+function trackVoice(osc: OscillatorNode, stopAt: number, now: number): void {
+  pruneVoices(now);
+  while (activeVoices.length >= MAX_VOICES) {
+    const victim = activeVoices.shift();
+    if (!victim) break;
+    try {
+      victim.osc.stop();
+    } catch {
+      // Ignore race conditions if the oscillator already stopped.
+    }
+  }
+  activeVoices.push({ osc, stopAt });
+}
+
 export function playNote(midi: number, duration = 0.55): void {
   const a = ensureContext();
   const t = a.currentTime;
@@ -41,6 +68,7 @@ export function playNote(midi: number, duration = 0.55): void {
   g.connect(master!);
 
   env(g, t, duration);
+  trackVoice(osc, t + duration + 0.03, t);
   osc.start(t);
   osc.stop(t + duration + 0.03);
 }
