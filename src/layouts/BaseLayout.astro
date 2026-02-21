@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import { withBase } from "../lib/base";
 
 interface Props {
   title: string;
@@ -7,9 +8,6 @@ interface Props {
 }
 
 const { title, active = "" } = Astro.props;
-const rawBase = import.meta.env.BASE_URL;
-const base = rawBase.endsWith("/") ? rawBase : `${rawBase}/`;
-const withBase = (path: string) => new URL(path, `https://taskuteoria.local${base}`).pathname;
 
 const nav = [
   { href: withBase("harjoittele"), label: "Harjoittele", key: "harjoittele" },
@@ -39,11 +37,7 @@ const nav = [
         <a href={item.href} class={active === item.key ? "active" : ""}>{item.label}</a>
       ))}
     </nav>
-    <script>
-      const base = import.meta.env.BASE_URL.endsWith("/")
-        ? import.meta.env.BASE_URL
-        : `${import.meta.env.BASE_URL}/`;
-      const swPath = `${base}sw.js`;
+    <script define:vars={{ swPath: withBase("sw.js") }}>
       if ("serviceWorker" in navigator) {
         window.addEventListener("load", () => navigator.serviceWorker.register(swPath));
       }

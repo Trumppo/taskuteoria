@@ -1,9 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import learningPath from "../content/path/14-day.json";
-const rawBase = import.meta.env.BASE_URL;
-const base = rawBase.endsWith("/") ? rawBase : `${rawBase}/`;
-const withBase = (path: string) => new URL(path, `https://taskuteoria.local${base}`).pathname;
+import { withBase } from "../lib/base";
 
 const dayPlans = [
   {
