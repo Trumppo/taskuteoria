@@ -1,0 +1,22 @@
+---
+import { withBase } from "../lib/base";
+---
+
+<section class="card level-notice">
+  <div class="level-row">
+    <p class="small" id="level-label">Taso: Aloittelija</p>
+    <a class="small link" href={withBase("valitsin")}>Vaihda tasoa</a>
+  </div>
+  <p class="small level-empty" id="level-empty" hidden>
+    Ei sisaltoa talle tasolle viela. <a class="link" href={withBase("valitsin")}>Vaihda tasoa</a>
+  </p>
+</section>
+
+<script>
+  import { getLevelLabel } from "../lib/level";
+
+  const label = document.getElementById("level-label");
+  if (label) {
+    label.textContent = `Taso: ${getLevelLabel()}`;
+  }
+</script>

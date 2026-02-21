@@ -6,6 +6,15 @@ import { withBase } from "../lib/base";
 <BaseLayout title="Harjoitusvalitsin | TaskuTeoria" active="harjoittele">
   <section class="card">
     <h1>Harjoitusvalitsin</h1>
+    <p>Valitse taso ja aloita harjoitus. Taso vaikuttaa osioiden tehtaviin.</p>
+    <div class="segmented" role="tablist" aria-label="Taso">
+      <button class="segment-btn" type="button" data-level="beginner">Aloittelija</button>
+      <button class="segment-btn" type="button" data-level="intermediate">Edistynyt</button>
+      <button class="segment-btn" type="button" data-level="expert">Asiantuntija</button>
+    </div>
+  </section>
+
+  <section class="card">
     <p>Valitse nopea 5-8 minuutin harjoitus.</p>
   </section>
 
@@ -19,4 +28,33 @@ import { withBase } from "../lib/base";
     <a class="btn ghost" href={withBase("pikavisa")}>Pikavisa (mix)</a>
     <a class="btn ghost" href={withBase("polku")}>14 paivan polku</a>
   </section>
+
+  <script>
+    import { getLevel, setLevel } from "../lib/level";
+
+    const buttons = Array.from(document.querySelectorAll("[data-level]"));
+
+    const render = () => {
+      const level = getLevel();
+      buttons.forEach((btn) => {
+        if (!(btn instanceof HTMLButtonElement)) return;
+        const isActive = btn.dataset.level === level;
+        btn.classList.toggle("is-active", isActive);
+        btn.setAttribute("aria-pressed", isActive ? "true" : "false");
+      });
+    };
+
+    render();
+
+    buttons.forEach((btn) => {
+      if (!(btn instanceof HTMLButtonElement)) return;
+      btn.addEventListener("click", () => {
+        const level = btn.dataset.level;
+        if (level === "beginner" || level === "intermediate" || level === "expert") {
+          setLevel(level);
+          render();
+        }
+      });
+    });
+  </script>
 </BaseLayout>

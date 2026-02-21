@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import LevelNotice from "../components/LevelNotice.astro";
 ---
 
 <BaseLayout title="Kuuntele | TaskuTeoria" active="kuuntele" showNav={false}>
@@ -7,6 +8,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     <h1>Kuuntelutehtavat</h1>
     <p>Tunnista kuulemasi intervalli tai sointu. Saat valittoman palautteen ja pisteet tallentuvat laitteelle.</p>
   </section>
+
+  <LevelNotice />
 
   <section class="card">
     <h2 id="prompt">Kuuntele tehtava</h2>

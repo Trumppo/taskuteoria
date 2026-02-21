@@ -20,6 +20,7 @@ const noteDeckSchema = z.object({
       midi: z.number(),
       clef: z.enum(["treble", "bass"]),
       staffPos: z.number(),
+      level: z.enum(["beginner", "intermediate", "expert"]).optional(),
       difficulty: z.enum(["easy", "medium", "hard"]).optional(),
       tags: z.array(z.string()).optional(),
       weight: z.number().optional(),

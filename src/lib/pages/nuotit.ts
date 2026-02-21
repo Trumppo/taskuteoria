@@ -1,6 +1,7 @@
 import { playNote, setMasterGain } from "../audio/synth";
 import { addPracticeMinutes, registerSession, saveProgress } from "../progress";
 import { loadSettings } from "../settings";
+import { getLevel } from "../level";
 import { markSeen, pickTask, recordResult, updateCooldown } from "../taskSelection";
 
 type NoteItem = {
@@ -9,6 +10,7 @@ type NoteItem = {
   midi: number;
   clef: "treble" | "bass";
   staffPos: number;
+  level?: "beginner" | "intermediate" | "expert";
   weight?: number;
 };
 
@@ -35,10 +37,22 @@ export default function initNuotit(data: NuotitData): void {
   const statsEl = getRequiredElement<HTMLElement>("stats");
   const playBtn = getRequiredElement<HTMLButtonElement>("play-btn");
 
-  let current = data.notes[0];
+  const level = getLevel();
+  const pool = data.notes.filter((note) => (note.level ?? "beginner") === level);
+  let current = pool[0];
   let progress = registerSession();
-  const noteOptions = [...new Set(data.notes.map((note) => note.answer))];
+  const noteOptions = [...new Set(pool.map((note) => note.answer))];
   const selectionOptions = { cooldown: 3, minSamples: 5, recencyDays: 7 };
+  const emptyEl = document.getElementById("level-empty");
+
+  if (pool.length === 0) {
+    if (emptyEl) emptyEl.hidden = false;
+    targetEl.textContent = "Ei sisaltoa talle tasolle viela.";
+    playBtn.disabled = true;
+    choicesEl.innerHTML = "";
+    statsEl.textContent = "";
+    return;
+  }
 
   function renderStaff(note: NoteItem) {
     staffWrapEl.innerHTML = "";
@@ -117,7 +131,7 @@ export default function initNuotit(data: NuotitData): void {
   }
 
   function nextRound() {
-    current = pickTask("nuotit", data.notes, selectionOptions);
+    current = pickTask("nuotit", pool, selectionOptions);
     markSeen("nuotit", current.id);
     updateCooldown("nuotit", current.id, selectionOptions.cooldown);
     renderStaff(current);

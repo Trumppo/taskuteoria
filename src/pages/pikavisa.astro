@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import LevelNotice from "../components/LevelNotice.astro";
 ---
 
 <BaseLayout title="Pikavisa | TaskuTeoria" active="harjoittele" showNav={false}>
@@ -9,6 +10,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     <p class="small" id="quiz-progress">Kysymys 1/5</p>
     <p class="small" id="quiz-score">Pisteet: 0</p>
   </section>
+
+  <LevelNotice />
 
   <section class="card">
     <h2 id="quiz-question">Ladataan...</h2>

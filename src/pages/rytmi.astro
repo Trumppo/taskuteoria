@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import LevelNotice from "../components/LevelNotice.astro";
 ---
 
 <BaseLayout title="Rytmi | TaskuTeoria" active="harjoittele" showNav={false}>
@@ -8,6 +9,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     <p>Naputa metronomin mukana ja rakenna tahtia. Yksi osio kerrallaan, selkea fokus.</p>
     <p class="small" id="stats"></p>
   </section>
+
+  <LevelNotice />
 
   <section class="card">
     <h2>Tap-harjoitus</h2>

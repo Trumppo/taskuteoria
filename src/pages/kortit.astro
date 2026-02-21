@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import LevelNotice from "../components/LevelNotice.astro";
 import deck from "../content/decks/flashcards.json";
 ---
 
@@ -11,6 +12,8 @@ import deck from "../content/decks/flashcards.json";
     <h2 id="front">{deck[0].front}</h2>
     <p id="back" class="small" hidden>{deck[0].back}</p>
   </section>
+
+  <LevelNotice />
   <section class="card grid">
     <button id="show" type="button" class="btn ghost">Nayta vastaus</button>
     <button id="knew" type="button" class="btn">Tiesin</button>

@@ -91,6 +91,24 @@ body.no-nav main {
   color: var(--muted);
 }
 
+.level-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .6rem;
+}
+
+.link {
+  color: var(--primary-strong);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.link:hover,
+.link:focus-visible {
+  text-decoration: underline;
+}
+
 h1, h2, h3 { line-height: 1.15; margin: 0 0 .6rem; }
 p { margin: 0 0 .8rem; color: var(--muted); }
 
@@ -113,6 +131,33 @@ p { margin: 0 0 .8rem; color: var(--muted); }
   display: grid;
   grid-template-columns: repeat(1, minmax(0, 1fr));
   gap: .7rem;
+}
+
+.segmented {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: .4rem;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: .35rem;
+}
+
+.segment-btn {
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text);
+  font-weight: 700;
+  padding: .6rem .4rem;
+  font: inherit;
+}
+
+.segment-btn.is-active {
+  background: #ffffff;
+  border-color: rgba(11, 110, 79, 0.3);
+  color: var(--primary-strong);
+  box-shadow: 0 6px 12px rgba(10, 20, 30, 0.08);
 }
 
 .card.tile {

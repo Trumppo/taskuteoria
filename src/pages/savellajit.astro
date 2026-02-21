@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import LevelNotice from "../components/LevelNotice.astro";
 import keyDeck from "../content/decks/key-signatures.json";
 ---
 
@@ -9,6 +10,8 @@ import keyDeck from "../content/decks/key-signatures.json";
     <p>Nopeat kysymykset savellajeista. Yksi kysymys kerrallaan.</p>
     <p class="small" id="stats"></p>
   </section>
+
+  <LevelNotice />
 
   <section class="card">
     <p id="key-question"></p>

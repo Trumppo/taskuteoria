@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../../../layouts/BaseLayout.astro";
+import LevelNotice from "../../../components/LevelNotice.astro";
 import learningPath from "../../../content/path/14-day.json";
 import keyDeck from "../../../content/decks/key-signatures.json";
 import flashcards from "../../../content/decks/flashcards.json";
@@ -30,6 +31,8 @@ const nextStep = day.steps[stepIndex + 1];
       {nextStep && <a class="btn" href={withBase(`polku/${day.id}/${nextStep.key}`)}>Seuraava vaihe</a>}
     </div>
   </section>
+
+  <LevelNotice />
 
   <script define:vars={{ dayId: day.id, stepKey: step.key }} is:inline>
     import { markStepCompleted } from "../../../lib/pathProgress";
