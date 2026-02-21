@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import noteDeck from "../content/decks/note-identification.json";
+import rhythmDeck from "../content/decks/rhythm-values.json";
 ---
 
 <BaseLayout title="Harjoittele | TaskuTeoria" active="harjoittele">
@@ -31,12 +32,25 @@ import noteDeck from "../content/decks/note-identification.json";
     </div>
   </section>
 
+  <section class="card">
+    <h2>Tahti drag & drop</h2>
+    <p>Raahaa nuottiarvoja tahtiin niin, että kokonaiskesto on {rhythmDeck.targetBeats} iskua ({rhythmDeck.timeSignature}).</p>
+    <div class="grid" id="rhythm-palette"></div>
+    <div id="rhythm-dropzone" class="dropzone" aria-label="Tahtialue"></div>
+    <p class="small" id="rhythm-dd-status">Tahti: 0 / {rhythmDeck.targetBeats} iskua</p>
+    <div class="grid">
+      <button class="btn" id="rhythm-dd-check" type="button">Tarkista tahti</button>
+      <button class="btn ghost" id="rhythm-dd-reset" type="button">Tyhjenna</button>
+    </div>
+  </section>
+
   <script type="module">
     import { playMetronome, playNote, setMasterGain } from "../lib/audio/synth.ts";
     import { loadProgress, saveProgress, registerSession } from "../lib/progress.ts";
     import { loadSettings } from "../lib/settings.ts";
 
     const notes = JSON.parse('{JSON.stringify(noteDeck.notes)}');
+    const rhythmDeck = JSON.parse('{JSON.stringify(rhythmDeck)}');
     const settings = loadSettings();
     setMasterGain(settings.masterGain);
 
@@ -49,6 +63,11 @@ import noteDeck from "../content/decks/note-identification.json";
     const rhythmStartBtn = document.getElementById("rhythm-start");
     const rhythmTapBtn = document.getElementById("rhythm-tap");
     const rhythmStopBtn = document.getElementById("rhythm-stop");
+    const rhythmPaletteEl = document.getElementById("rhythm-palette");
+    const rhythmDropzoneEl = document.getElementById("rhythm-dropzone");
+    const rhythmDdStatusEl = document.getElementById("rhythm-dd-status");
+    const rhythmDdCheckBtn = document.getElementById("rhythm-dd-check");
+    const rhythmDdResetBtn = document.getElementById("rhythm-dd-reset");
 
     let current = notes[Math.floor(Math.random() * notes.length)];
     let progress = registerSession();
@@ -59,6 +78,8 @@ import noteDeck from "../content/decks/note-identification.json";
     let taps = [];
     const beatCount = 4;
     const timingWindowMs = 140;
+    let draggedPieceId = null;
+    let measure = [];
 
     function renderStats() {
       const noteRatio = progress.stats.noteTotal
@@ -155,7 +176,78 @@ import noteDeck from "../content/decks/note-identification.json";
       resetRhythmUi();
     });
 
+    function beatsInMeasure() {
+      return measure.reduce((sum, piece) => sum + Number(piece.beats), 0);
+    }
+
+    function renderMeasure() {
+      rhythmDropzoneEl.innerHTML = "";
+      measure.forEach((piece, index) => {
+        const chip = document.createElement("div");
+        chip.className = "dropchip";
+        chip.textContent = `${piece.label} (${piece.beats})`;
+        chip.title = "Napauta poistaaksesi";
+        chip.addEventListener("click", () => {
+          measure.splice(index, 1);
+          renderMeasure();
+        });
+        rhythmDropzoneEl.appendChild(chip);
+      });
+      rhythmDdStatusEl.textContent = `Tahti: ${beatsInMeasure()} / ${rhythmDeck.targetBeats} iskua`;
+    }
+
+    rhythmDeck.pieces.forEach((piece) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "btn ghost";
+      btn.textContent = `${piece.label} (${piece.beats})`;
+      btn.draggable = true;
+      btn.addEventListener("dragstart", () => {
+        draggedPieceId = piece.id;
+      });
+      btn.addEventListener("click", () => {
+        measure.push(piece);
+        renderMeasure();
+      });
+      rhythmPaletteEl.appendChild(btn);
+    });
+
+    rhythmDropzoneEl.addEventListener("dragover", (event) => {
+      event.preventDefault();
+      rhythmDropzoneEl.classList.add("is-over");
+    });
+    rhythmDropzoneEl.addEventListener("dragleave", () => {
+      rhythmDropzoneEl.classList.remove("is-over");
+    });
+    rhythmDropzoneEl.addEventListener("drop", (event) => {
+      event.preventDefault();
+      rhythmDropzoneEl.classList.remove("is-over");
+      if (!draggedPieceId) return;
+      const piece = rhythmDeck.pieces.find((p) => p.id === draggedPieceId);
+      if (!piece) return;
+      measure.push(piece);
+      renderMeasure();
+    });
+
+    rhythmDdCheckBtn.addEventListener("click", () => {
+      const total = beatsInMeasure();
+      const ok = total === rhythmDeck.targetBeats;
+      progress.stats.rhythmTotal += 1;
+      if (ok) progress.stats.rhythmCorrect += 1;
+      saveProgress(progress);
+      renderStats();
+      rhythmDdStatusEl.textContent = ok
+        ? `Oikein! Tahti tayttyi tarkasti (${total}/${rhythmDeck.targetBeats}).`
+        : `Ei viela oikein (${total}/${rhythmDeck.targetBeats}). Kokeile uudelleen.`;
+    });
+
+    rhythmDdResetBtn.addEventListener("click", () => {
+      measure = [];
+      renderMeasure();
+    });
+
     nextRound();
     renderStats();
+    renderMeasure();
   </script>
 </BaseLayout>

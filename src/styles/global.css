@@ -114,6 +114,32 @@ input[type="range"] {
   width: 100%;
 }
 
+.dropzone {
+  min-height: 86px;
+  border: 2px dashed var(--border);
+  border-radius: 12px;
+  padding: .6rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin: .5rem 0;
+  background: var(--bg-soft);
+}
+
+.dropzone.is-over {
+  border-color: var(--primary);
+  background: #f1fbf7;
+}
+
+.dropchip {
+  display: inline-block;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: .35rem .65rem;
+  background: #fff;
+  font-size: .86rem;
+}
+
 @media (min-width: 900px) {
   main { padding-top: 1.3rem; }
 }

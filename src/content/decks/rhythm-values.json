@@ -1,0 +1,11 @@
+{
+  "timeSignature": "4/4",
+  "targetBeats": 4,
+  "pieces": [
+    { "id": "whole", "label": "Kokonuotti", "beats": 4 },
+    { "id": "half", "label": "Puolinuotti", "beats": 2 },
+    { "id": "quarter", "label": "Neljäsosa", "beats": 1 },
+    { "id": "eighth", "label": "Kahdeksasosa", "beats": 0.5 }
+  ]
+}
+
