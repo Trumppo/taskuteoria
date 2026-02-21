@@ -1,34 +1,120 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import quiz from "../content/decks/listening-quiz.json";
 ---
 
 <BaseLayout title="Kuuntele | TaskuTeoria" active="kuuntele">
   <section class="card">
     <h1>Kuuntelutehtavat</h1>
-    <p>Harjoittele intervalleja, sointuja ja perusmetronomia synteettisella aanella.</p>
+    <p>Tunnista kuulemasi intervalli tai sointu. Saat valittoman palautteen ja pisteet tallentuvat laitteelle.</p>
+  </section>
+
+  <section class="card">
+    <h2 id="prompt">Kuuntele tehtava</h2>
+    <p class="small" id="feedback">Paina "Soita tehtava".</p>
+    <div class="grid">
+      <button class="btn" id="play-task" type="button">Soita tehtava</button>
+      <button class="btn ghost" id="new-task" type="button">Uusi tehtava</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <h3>Vastausvaihtoehdot</h3>
+    <div class="grid" id="choices"></div>
+    <p class="small" id="stats"></p>
   </section>
 
   <section class="card grid">
-    <button class="btn" id="i2" type="button">Soita sekunti</button>
-    <button class="btn" id="i5" type="button">Soita kvintti</button>
-    <button class="btn" id="maj" type="button">Soita duurisointu</button>
-    <button class="btn" id="min" type="button">Soita mollisointu</button>
-    <button class="btn ghost" id="metro" type="button">Metronomi 90 BPM</button>
+    <button class="btn ghost" id="metro" type="button">Metronomi</button>
     <button class="btn ghost" id="stop" type="button">Pysayta</button>
   </section>
 
   <script type="module">
     import { playInterval, playChord, playMetronome, setMasterGain } from "../lib/audio/synth.ts";
     import { loadSettings } from "../lib/settings.ts";
+    import { loadProgress, registerSession, saveProgress } from "../lib/progress.ts";
 
     let stopMetro = null;
     const settings = loadSettings();
     setMasterGain(settings.masterGain);
+    let progress = registerSession();
 
-    document.getElementById("i2").addEventListener("click", () => playInterval(60, 2, false));
-    document.getElementById("i5").addEventListener("click", () => playInterval(60, 7, false));
-    document.getElementById("maj").addEventListener("click", () => playChord(60, "major"));
-    document.getElementById("min").addEventListener("click", () => playChord(60, "minor"));
+    const intervals = JSON.parse('{JSON.stringify(quiz.intervals)}');
+    const chords = JSON.parse('{JSON.stringify(quiz.chords)}');
+    const promptEl = document.getElementById("prompt");
+    const feedbackEl = document.getElementById("feedback");
+    const statsEl = document.getElementById("stats");
+    const choicesEl = document.getElementById("choices");
+    const playTaskBtn = document.getElementById("play-task");
+    const newTaskBtn = document.getElementById("new-task");
+
+    let currentTask = null;
+
+    function renderStats() {
+      const ratio = progress.stats.listeningTotal
+        ? Math.round((progress.stats.listeningCorrect / progress.stats.listeningTotal) * 100)
+        : 0;
+      statsEl.textContent = `Kuuntelu: ${progress.stats.listeningCorrect}/${progress.stats.listeningTotal} (${ratio} %)`;
+    }
+
+    function playCurrentTask() {
+      if (!currentTask) return;
+      if (currentTask.kind === "interval") {
+        playInterval(60, currentTask.value.semitones, false);
+      } else {
+        playChord(60, currentTask.value.quality);
+      }
+    }
+
+    function nextTask() {
+      const kind = Math.random() < 0.5 ? "interval" : "chord";
+      if (kind === "interval") {
+        currentTask = { kind, value: intervals[Math.floor(Math.random() * intervals.length)] };
+        promptEl.textContent = "Tunnista intervalli";
+        choicesEl.innerHTML = "";
+        intervals.forEach((item) => {
+          const b = document.createElement("button");
+          b.className = "btn ghost";
+          b.type = "button";
+          b.textContent = item.label;
+          b.addEventListener("click", () => answer(item.id));
+          choicesEl.appendChild(b);
+        });
+      } else {
+        currentTask = { kind, value: chords[Math.floor(Math.random() * chords.length)] };
+        promptEl.textContent = "Tunnista sointu";
+        choicesEl.innerHTML = "";
+        chords.forEach((item) => {
+          const b = document.createElement("button");
+          b.className = "btn ghost";
+          b.type = "button";
+          b.textContent = item.label;
+          b.addEventListener("click", () => answer(item.id));
+          choicesEl.appendChild(b);
+        });
+      }
+      feedbackEl.textContent = "Paina Soita tehtava ja valitse vastaus.";
+    }
+
+    function answer(selectedId) {
+      if (!currentTask) return;
+      const correct = selectedId === currentTask.value.id;
+      progress = loadProgress();
+      progress.stats.listeningTotal += 1;
+      if (correct) progress.stats.listeningCorrect += 1;
+      saveProgress(progress);
+      renderStats();
+      feedbackEl.textContent = correct
+        ? "Oikein!"
+        : `Vaarin. Oikea vastaus: ${currentTask.value.label}.`;
+      window.setTimeout(() => {
+        nextTask();
+        playCurrentTask();
+      }, 700);
+    }
+
+    playTaskBtn.addEventListener("click", () => playCurrentTask());
+    newTaskBtn.addEventListener("click", () => nextTask());
 
     document.getElementById("metro").addEventListener("click", () => {
       if (stopMetro) stopMetro();
@@ -39,5 +125,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       if (stopMetro) stopMetro();
       stopMetro = null;
     });
+
+    renderStats();
+    nextTask();
   </script>
 </BaseLayout>
