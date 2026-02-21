@@ -1,12 +1,11 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import noteDeck from "../content/decks/note-identification.json";
 ---
 
 <BaseLayout title="Nuotit | TaskuTeoria" active="harjoittele" showNav={false}>
   <section class="card">
-    <h1>{noteDeck.title}</h1>
-    <p>{noteDeck.description} Vastaus annetaan heti ja harjoitus toimii seka diskantilla etta bassolla.</p>
+    <h1>Nuotit</h1>
+    <p>Perusalue + laajennetut viivaston apuviivat. Vastaus annetaan heti ja harjoitus toimii seka diskantilla etta bassolla.</p>
     <p class="small" id="clef-label">Klaavi: -</p>
     <div id="staff-wrap" class="staff-wrap" aria-label="Viivasto"></div>
     <p class="small" id="feedback" aria-live="polite">Aloita harjoitus.</p>
@@ -23,10 +22,11 @@ import noteDeck from "../content/decks/note-identification.json";
 
   <script>
     import initNuotit, { type NuotitData } from "../lib/pages/nuotit";
-    import noteDeck from "../content/decks/note-identification.json";
+    import notesBasic from "../content/decks/notes-basic.json";
+    import notesExtended from "../content/decks/notes-extended.json";
 
     const data: NuotitData = {
-      notes: noteDeck.notes as NuotitData["notes"],
+      notes: [...notesBasic.notes, ...notesExtended.notes] as NuotitData["notes"],
     };
     initNuotit(data);
   </script>

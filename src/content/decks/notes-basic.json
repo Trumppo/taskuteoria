@@ -1,0 +1,21 @@
+{
+  "id": "notes-basic-fi",
+  "title": "Nuotit (perus)",
+  "description": "Valitse oikea savel viivastolta. Perusalue diskantille ja bassolle.",
+  "notes": [
+    { "id": "tr-c4", "label": "C4", "answer": "C", "midi": 60, "clef": "treble", "staffPos": -2, "difficulty": "easy", "tags": ["treble", "basic"], "weight": 1 },
+    { "id": "tr-d4", "label": "D4", "answer": "D", "midi": 62, "clef": "treble", "staffPos": -1, "difficulty": "easy", "tags": ["treble", "basic"], "weight": 1 },
+    { "id": "tr-e4", "label": "E4", "answer": "E", "midi": 64, "clef": "treble", "staffPos": 0, "difficulty": "easy", "tags": ["treble", "basic"], "weight": 1 },
+    { "id": "tr-f4", "label": "F4", "answer": "F", "midi": 65, "clef": "treble", "staffPos": 1, "difficulty": "easy", "tags": ["treble", "basic"], "weight": 1 },
+    { "id": "tr-g4", "label": "G4", "answer": "G", "midi": 67, "clef": "treble", "staffPos": 2, "difficulty": "easy", "tags": ["treble", "basic"], "weight": 1 },
+    { "id": "tr-a4", "label": "A4", "answer": "A", "midi": 69, "clef": "treble", "staffPos": 3, "difficulty": "easy", "tags": ["treble", "basic"], "weight": 1 },
+    { "id": "tr-b4", "label": "H4", "answer": "H", "midi": 71, "clef": "treble", "staffPos": 4, "difficulty": "easy", "tags": ["treble", "basic"], "weight": 1 },
+    { "id": "ba-c3", "label": "C3", "answer": "C", "midi": 48, "clef": "bass", "staffPos": -2, "difficulty": "easy", "tags": ["bass", "basic"], "weight": 1 },
+    { "id": "ba-d3", "label": "D3", "answer": "D", "midi": 50, "clef": "bass", "staffPos": -1, "difficulty": "easy", "tags": ["bass", "basic"], "weight": 1 },
+    { "id": "ba-e3", "label": "E3", "answer": "E", "midi": 52, "clef": "bass", "staffPos": 0, "difficulty": "easy", "tags": ["bass", "basic"], "weight": 1 },
+    { "id": "ba-f3", "label": "F3", "answer": "F", "midi": 53, "clef": "bass", "staffPos": 1, "difficulty": "easy", "tags": ["bass", "basic"], "weight": 1 },
+    { "id": "ba-g3", "label": "G3", "answer": "G", "midi": 55, "clef": "bass", "staffPos": 2, "difficulty": "easy", "tags": ["bass", "basic"], "weight": 1 },
+    { "id": "ba-a3", "label": "A3", "answer": "A", "midi": 57, "clef": "bass", "staffPos": 3, "difficulty": "easy", "tags": ["bass", "basic"], "weight": 1 },
+    { "id": "ba-b3", "label": "H3", "answer": "H", "midi": 59, "clef": "bass", "staffPos": 4, "difficulty": "easy", "tags": ["bass", "basic"], "weight": 1 }
+  ]
+}

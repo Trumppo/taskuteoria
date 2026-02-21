@@ -1,12 +1,15 @@
 import { playNote, setMasterGain } from "../audio/synth";
 import { addPracticeMinutes, registerSession, saveProgress } from "../progress";
 import { loadSettings } from "../settings";
+import { markSeen, pickTask, recordResult, updateCooldown } from "../taskSelection";
 
 type NoteItem = {
   answer: string;
+  id: string;
   midi: number;
   clef: "treble" | "bass";
   staffPos: number;
+  weight?: number;
 };
 
 export type NuotitData = {
@@ -32,9 +35,10 @@ export default function initNuotit(data: NuotitData): void {
   const statsEl = getRequiredElement<HTMLElement>("stats");
   const playBtn = getRequiredElement<HTMLButtonElement>("play-btn");
 
-  let current = data.notes[Math.floor(Math.random() * data.notes.length)];
+  let current = data.notes[0];
   let progress = registerSession();
   const noteOptions = [...new Set(data.notes.map((note) => note.answer))];
+  const selectionOptions = { cooldown: 3, minSamples: 5, recencyDays: 7 };
 
   function renderStaff(note: NoteItem) {
     staffWrapEl.innerHTML = "";
@@ -113,7 +117,9 @@ export default function initNuotit(data: NuotitData): void {
   }
 
   function nextRound() {
-    current = data.notes[Math.floor(Math.random() * data.notes.length)];
+    current = pickTask("nuotit", data.notes, selectionOptions);
+    markSeen("nuotit", current.id);
+    updateCooldown("nuotit", current.id, selectionOptions.cooldown);
     renderStaff(current);
     targetEl.textContent = "Mika vaihtoehto vastaa nuottia viivastolla?";
   }
@@ -125,6 +131,7 @@ export default function initNuotit(data: NuotitData): void {
     b.textContent = answerOption;
     b.addEventListener("click", () => {
       const ok = answerOption === current.answer;
+      recordResult("nuotit", current.id, ok);
       progress.stats.noteTotal += 1;
       if (ok) progress.stats.noteCorrect += 1;
       saveProgress(progress);
