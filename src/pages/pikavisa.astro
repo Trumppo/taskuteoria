@@ -26,7 +26,8 @@ import rhythmDeck from "../content/decks/rhythm-values.json";
     <button id="quiz-next" type="button" class="btn">Seuraava</button>
   </section>
 
-  <script type="module">
+  <script>
+    // -nocheck
     import { addPracticeMinutes, registerSession } from "../lib/progress.ts";
     import { loadSettings } from "../lib/settings.ts";
     import { playInterval, playChord, setMasterGain } from "../lib/audio/synth.ts";

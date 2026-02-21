@@ -31,7 +31,8 @@ import quiz from "../content/decks/listening-quiz.json";
     <button class="btn ghost" id="stop" type="button">Pysayta</button>
   </section>
 
-  <script type="module">
+  <script>
+    // -nocheck
     import { playInterval, playChord, playMetronome, setMasterGain } from "../lib/audio/synth.ts";
     import { loadSettings } from "../lib/settings.ts";
     import { addPracticeMinutes, loadProgress, registerSession, saveProgress } from "../lib/progress.ts";

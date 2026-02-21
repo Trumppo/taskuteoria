@@ -8,51 +8,17 @@ const withBase = (path: string) => new URL(path, `https://taskuteoria.local${bas
 <BaseLayout title="TaskuTeoria" active="harjoittele">
   <section class="card">
     <h1>TaskuTeoria</h1>
-    <p>Staattinen, mobiiliin optimoitu musiikinteorian harjoittelusovellus. Harjoittele 5-10 min paivassa.</p>
-    <div class="grid">
-      <a class="btn" href={withBase("harjoittele")}>Jatka harjoittelua</a>
-      <a class="btn ghost" href={withBase("valitsin")}>Harjoitusvalitsin</a>
-      <a class="btn ghost" href={withBase("pikavisa")}>Pikavisa</a>
-      <a class="btn ghost" href={withBase("asetukset")}>Asetukset</a>
-    </div>
+    <p>Valitse osa-alue ja aloita harjoitus.</p>
   </section>
 
-  <section class="card">
-    <h2>Taman paivan fokus</h2>
-    <p class="small" id="daily-goal">Paivan tavoite: 8 min</p>
-    <p class="small" id="daily-progress">Tanaan harjoiteltu: 0 min</p>
-    <p class="small" id="daily-done">Paiva valmis: Ei viela</p>
-    <p class="small" id="streak">Putki: 0 paivaa</p>
-    <p class="small" id="accuracy">Nuottitarkkuus: 0 %</p>
-    <p class="small" id="rhythm-accuracy">Rytmitarkkuus: 0 %</p>
-    <p class="small" id="listening-accuracy">Kuuntelutarkkuus: 0 %</p>
-    <p class="small" id="weakest">Heikoin osa-alue: Ei tarpeeksi dataa</p>
-    <div class="grid">
-      <a class="btn ghost" href={withBase("harjoittele")}>Nuotit</a>
-      <a class="btn ghost" href={withBase("kuuntele")}>Intervallit</a>
-      <a class="btn ghost" href={withBase("kortit")}>Flashcards</a>
-      <a class="btn ghost" href={withBase("polku")}>14 paivan polku</a>
-      <a class="btn ghost" href={withBase("valitsin")}>Kaikki harjoitukset</a>
-    </div>
+  <section class="card grid">
+    <a class="btn" href={withBase("valitsin")}>Harjoitusvalitsin</a>
+    <a class="btn ghost" href={withBase("harjoittele")}>Nuotit, rytmi, savellajit</a>
+    <a class="btn ghost" href={withBase("kuuntele")}>Kuuntelu</a>
+    <a class="btn ghost" href={withBase("kortit")}>Kortit (SRS)</a>
+    <a class="btn ghost" href={withBase("pikavisa")}>Pikavisa</a>
+    <a class="btn ghost" href={withBase("polku")}>14 paivan polku</a>
+    <a class="btn ghost" href={withBase("kirjasto")}>Mini-opetus</a>
+    <a class="btn ghost" href={withBase("asetukset")}>Asetukset</a>
   </section>
-
-  <script type="module">
-    import { loadProgress, isDailyGoalMet } from "../lib/progress.ts";
-    import { loadSettings } from "../lib/settings.ts";
-    import { buildSummary } from "../lib/metrics.ts";
-
-    const progress = loadProgress();
-    const settings = loadSettings();
-    const summary = buildSummary(progress);
-    const dailyDone = isDailyGoalMet(progress, settings.dailyGoalMin);
-
-    document.getElementById("daily-goal").textContent = `Paivan tavoite: ${settings.dailyGoalMin} min`;
-    document.getElementById("daily-progress").textContent = `Tanaan harjoiteltu: ${progress.todayMinutes} min`;
-    document.getElementById("daily-done").textContent = dailyDone ? "Paiva valmis: Kyllä" : "Paiva valmis: Ei vielä";
-    document.getElementById("streak").textContent = `Putki: ${progress.streak} paivaa`;
-    document.getElementById("accuracy").textContent = `Nuottitarkkuus: ${summary.noteAccuracyPercent} % (${summary.totalNoteAnswers} vastausta)`;
-    document.getElementById("rhythm-accuracy").textContent = `Rytmitarkkuus: ${summary.rhythmAccuracyPercent} % (${summary.totalRhythmAnswers} vastausta)`;
-    document.getElementById("listening-accuracy").textContent = `Kuuntelutarkkuus: ${summary.listeningAccuracyPercent} % (${summary.totalListeningAnswers} vastausta)`;
-    document.getElementById("weakest").textContent = `Heikoin osa-alue: ${summary.weakestArea}`;
-  </script>
 </BaseLayout>

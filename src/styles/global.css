@@ -155,6 +155,33 @@ input[type="range"] {
   max-width: 320px;
 }
 
+.day-card {
+  display: grid;
+  gap: .65rem;
+}
+
+.day-toggle {
+  text-align: left;
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg-soft);
+  padding: .75rem .85rem;
+  font: inherit;
+  color: var(--text);
+}
+
+.day-toggle[aria-expanded="true"] {
+  border-color: var(--primary);
+  background: #eef8f4;
+}
+
+.day-panel ul {
+  margin: .3rem 0 .9rem 1.1rem;
+  padding: 0;
+  color: var(--muted);
+}
+
 @media (min-width: 900px) {
   main { padding-top: 1.3rem; }
 }

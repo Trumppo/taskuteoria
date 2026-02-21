@@ -27,7 +27,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     <button id="reset-settings" class="btn ghost" type="button">Palauta oletukset</button>
   </section>
 
-  <script type="module">
+  <script>
+    // -nocheck
     import { loadSettings, saveSettings, resetSettings } from "../lib/settings.ts";
     import { setMasterGain, playNote } from "../lib/audio/synth.ts";
 

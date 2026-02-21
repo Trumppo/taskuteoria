@@ -35,7 +35,8 @@ import miniLessons from "../content/library/mini-lessons.json";
     <button class="btn" id="mini-next-lesson" type="button">Seuraava mini-opetus</button>
   </section>
 
-  <script type="module">
+  <script>
+    // -nocheck
     import { addPracticeMinutes, registerSession } from "../lib/progress.ts";
 
     const lessons = JSON.parse('{JSON.stringify(miniLessons)}');

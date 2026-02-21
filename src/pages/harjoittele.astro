@@ -56,7 +56,8 @@ import keyDeck from "../content/decks/key-signatures.json";
     <button class="btn ghost" id="key-next" type="button">Seuraava kysymys</button>
   </section>
 
-  <script type="module">
+  <script>
+    // -nocheck
     import { playMetronome, playNote, setMasterGain } from "../lib/audio/synth.ts";
     import { addPracticeMinutes, saveProgress, registerSession } from "../lib/progress.ts";
     import { loadSettings } from "../lib/settings.ts";

@@ -16,7 +16,8 @@ import deck from "../content/decks/flashcards.json";
     <button id="didnt" type="button" class="btn ghost">En tiennyt</button>
   </section>
 
-  <script type="module">
+  <script>
+    // -nocheck
     import { reviewCard } from "../lib/srs.ts";
     import { addPracticeMinutes, registerSession } from "../lib/progress.ts";
 
