@@ -1,22 +1,14 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-const days = [
-  "Paiva 1-3: Diskantti ja bassoklaavi",
-  "Paiva 4-6: Rytmi ja tahtilajit",
-  "Paiva 7: Kertaus",
-  "Paiva 8-9: Intervallit (nako + kuulo)",
-  "Paiva 10-11: Savellajit",
-  "Paiva 12-13: Kolmisoinnut ja kuuntelu",
-  "Paiva 14: Loppumix",
-];
+import learningPath from "../content/path/14-day.json";
 ---
 
 <BaseLayout title="Polku | TaskuTeoria" active="polku">
   <section class="card">
-    <h1>14 paivan oppimispolku</h1>
-    <p>Yksi lyhyt sessio paivassa riittaa. Tavoite: tasainen, kevyt kehitys.</p>
+    <h1>{learningPath.title}</h1>
+    <p>{learningPath.intro}</p>
   </section>
-  {days.map((item) => (
-    <section class="card"><p>{item}</p></section>
+  {learningPath.days.map((item) => (
+    <section class="card"><p>{item.range}: {item.focus}</p></section>
   ))}
 </BaseLayout>

@@ -1,0 +1,18 @@
+[
+  {
+    "id": "lib-note-values",
+    "title": "Nuottiarvot",
+    "body": "Kokonuotti kestaa nelja iskua, puolinuotti kaksi, neljasosanuotti yhden."
+  },
+  {
+    "id": "lib-time-signatures",
+    "title": "Tahtilajit",
+    "body": "4/4 on yleisin perustahti, 3/4 valssimainen, 6/8 keinuvampi kahteen laskettava tuntuma."
+  },
+  {
+    "id": "lib-intervals",
+    "title": "Intervallit",
+    "body": "Sekunti, terssi, kvartti, kvintti, seksti, septimi, oktaavi - opi kuulemaan etaisyydet."
+  }
+]
+

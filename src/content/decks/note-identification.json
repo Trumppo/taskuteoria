@@ -1,0 +1,15 @@
+{
+  "id": "note-identification-core-fi",
+  "title": "Nuottien tunnistus",
+  "description": "Valitse oikea savel. Vastaus annetaan heti.",
+  "notes": [
+    { "name": "C", "midi": 60 },
+    { "name": "D", "midi": 62 },
+    { "name": "E", "midi": 64 },
+    { "name": "F", "midi": 65 },
+    { "name": "G", "midi": 67 },
+    { "name": "A", "midi": 69 },
+    { "name": "H", "midi": 71 }
+  ]
+}
+

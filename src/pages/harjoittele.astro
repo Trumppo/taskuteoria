@@ -1,11 +1,12 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import noteDeck from "../content/decks/note-identification.json";
 ---
 
 <BaseLayout title="Harjoittele | TaskuTeoria" active="harjoittele">
   <section class="card">
-    <h1>Nuottien tunnistus</h1>
-    <p>Valitse oikea savel. Saat valittoman palautteen ja pisteet tallentuvat laitteellesi.</p>
+    <h1>{noteDeck.title}</h1>
+    <p>{noteDeck.description} Saat valittoman palautteen ja pisteet tallentuvat laitteellesi.</p>
     <div class="note" id="target-note">?</div>
     <p class="small" id="feedback">Aloita harjoitus.</p>
   </section>
@@ -23,15 +24,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     import { playNote } from "../lib/audio/synth.ts";
     import { loadProgress, saveProgress, registerSession } from "../lib/progress.ts";
 
-    const notes = [
-      { name: "C", midi: 60 },
-      { name: "D", midi: 62 },
-      { name: "E", midi: 64 },
-      { name: "F", midi: 65 },
-      { name: "G", midi: 67 },
-      { name: "A", midi: 69 },
-      { name: "H", midi: 71 },
-    ];
+    const notes = JSON.parse('{JSON.stringify(noteDeck.notes)}');
 
     const targetEl = document.getElementById("target-note");
     const feedbackEl = document.getElementById("feedback");
