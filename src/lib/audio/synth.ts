@@ -90,7 +90,7 @@ export function playChord(rootMidi: number, quality: "major" | "minor" = "major"
 
 export function playMetronome(bpm: number, timeSig: "4/4" | "3/4" | "6/8"): () => void {
   const a = ensureContext();
-  const beats = Number(timeSig.split("/")[0]);
+  const beats = timeSig === "6/8" ? 3 : Number(timeSig.split("/")[0]);
   const beatDur = 60 / bpm;
   let i = 0;
   const interval = window.setInterval(() => {

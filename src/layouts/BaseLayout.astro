@@ -37,7 +37,7 @@ const nav = [
         <a href={item.href} class={active === item.key ? "active" : ""}>{item.label}</a>
       ))}
     </nav>
-    <script define:vars={{ swPath: withBase("sw.js") }}>
+    <script define:vars={{ swPath: withBase("sw.js") }} is:inline>
       if ("serviceWorker" in navigator) {
         window.addEventListener("load", () => navigator.serviceWorker.register(swPath));
       }

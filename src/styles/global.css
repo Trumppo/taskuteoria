@@ -21,6 +21,11 @@ body {
   min-height: 100vh;
 }
 
+:focus-visible {
+  outline: 3px solid rgba(11, 110, 79, 0.55);
+  outline-offset: 2px;
+}
+
 main {
   max-width: 760px;
   margin: 0 auto;

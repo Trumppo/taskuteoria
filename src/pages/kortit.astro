@@ -7,6 +7,7 @@ import deck from "../content/decks/flashcards.json";
   <section class="card">
     <h1>Flashcards</h1>
     <p>Tiesin / En tiennyt -malli. Toistovaly tallennetaan localStorageen.</p>
+    <p class="small" id="status" aria-live="polite"></p>
     <h2 id="front">{deck[0].front}</h2>
     <p id="back" class="small" hidden>{deck[0].back}</p>
   </section>
@@ -17,37 +18,9 @@ import deck from "../content/decks/flashcards.json";
   </section>
 
   <script>
-    // @ts-nocheck
-    import { reviewCard } from "../lib/srs.ts";
-    import { addPracticeMinutes, registerSession } from "../lib/progress.ts";
+    import initKortit from "../lib/pages/kortit";
 
     const deck = JSON.parse('{JSON.stringify(deck)}');
-    registerSession();
-    let i = 0;
-    const front = document.getElementById("front");
-    const back = document.getElementById("back");
-
-    function render() {
-      const card = deck[i % deck.length];
-      front.textContent = card.front;
-      back.textContent = card.back;
-      back.hidden = true;
-    }
-
-    document.getElementById("show").addEventListener("click", () => (back.hidden = false));
-    document.getElementById("knew").addEventListener("click", () => {
-      reviewCard(deck[i % deck.length].id, true);
-      addPracticeMinutes(0.35);
-      i += 1;
-      render();
-    });
-    document.getElementById("didnt").addEventListener("click", () => {
-      reviewCard(deck[i % deck.length].id, false);
-      addPracticeMinutes(0.35);
-      i += 1;
-      render();
-    });
-
-    render();
+    initKortit(deck);
   </script>
 </BaseLayout>

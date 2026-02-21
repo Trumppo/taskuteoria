@@ -12,6 +12,8 @@ const PRECACHE_URLS = [
   withBase("kuuntele/"),
   withBase("kirjasto/"),
   withBase("asetukset/"),
+  withBase("valitsin/"),
+  withBase("pikavisa/"),
   withBase("manifest.webmanifest"),
   withBase("icon.svg"),
   OFFLINE_URL,

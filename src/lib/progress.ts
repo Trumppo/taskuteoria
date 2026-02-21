@@ -12,6 +12,8 @@ export type ProgressData = {
     rhythmTotal: number;
     listeningCorrect: number;
     listeningTotal: number;
+    keyCorrect: number;
+    keyTotal: number;
   };
 };
 
@@ -31,8 +33,15 @@ const defaults: ProgressData = {
     rhythmTotal: 0,
     listeningCorrect: 0,
     listeningTotal: 0,
+    keyCorrect: 0,
+    keyTotal: 0,
   },
 };
+
+function localDateKey(date = new Date()): string {
+  const offsetMs = date.getTimezoneOffset() * 60 * 1000;
+  return new Date(date.getTime() - offsetMs).toISOString().slice(0, 10);
+}
 
 export function loadProgress(): ProgressData {
   const raw = localStorage.getItem(KEY);
@@ -49,8 +58,7 @@ export function saveProgress(data: ProgressData): void {
   localStorage.setItem(KEY, JSON.stringify(data));
 }
 
-function ensureTodayBucket(data: ProgressData): ProgressData {
-  const today = new Date().toISOString().slice(0, 10);
+function ensureTodayBucket(data: ProgressData, today: string): ProgressData {
   if (data.todayDate !== today) {
     data.todayDate = today;
     data.todayMinutes = 0;
@@ -60,19 +68,20 @@ function ensureTodayBucket(data: ProgressData): ProgressData {
 
 export function registerSession(): ProgressData {
   const current = loadProgress();
-  ensureTodayBucket(current);
-  const today = new Date().toISOString().slice(0, 10);
-  if (current.lastPracticeDate !== today) {
-    current.streak += 1;
-    current.lastPracticeDate = today;
-    saveProgress(current);
-  }
+  const today = localDateKey();
+  ensureTodayBucket(current, today);
+  if (current.lastPracticeDate === today) return current;
+  const yesterday = localDateKey(new Date(Date.now() - 24 * 60 * 60 * 1000));
+  current.streak = current.lastPracticeDate === yesterday ? current.streak + 1 : 1;
+  current.lastPracticeDate = today;
+  saveProgress(current);
   return current;
 }
 
 export function addPracticeMinutes(deltaMinutes: number): ProgressData {
   const current = loadProgress();
-  ensureTodayBucket(current);
+  const today = localDateKey();
+  ensureTodayBucket(current, today);
   const delta = Math.max(0, deltaMinutes);
   current.todayMinutes = Number((current.todayMinutes + delta).toFixed(2));
   current.totalMinutes = Number((current.totalMinutes + delta).toFixed(2));

@@ -17,6 +17,8 @@ function makeProgress(overrides: Partial<ProgressData["stats"]>): ProgressData {
       rhythmTotal: 0,
       listeningCorrect: 0,
       listeningTotal: 0,
+      keyCorrect: 0,
+      keyTotal: 0,
       ...overrides,
     },
   };
@@ -37,6 +39,8 @@ describe("metrics", () => {
         rhythmTotal: 10,
         listeningCorrect: 6,
         listeningTotal: 10,
+        keyCorrect: 9,
+        keyTotal: 10,
       }),
     );
     expect(summary.noteAccuracyPercent).toBe(80);
@@ -45,4 +49,3 @@ describe("metrics", () => {
     expect(summary.weakestArea).toBe("Rytmi");
   });
 });
-

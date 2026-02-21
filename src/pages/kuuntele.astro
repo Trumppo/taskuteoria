@@ -1,6 +1,5 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import quiz from "../content/decks/listening-quiz.json";
 ---
 
 <BaseLayout title="Kuuntele | TaskuTeoria" active="kuuntele">
@@ -11,7 +10,7 @@ import quiz from "../content/decks/listening-quiz.json";
 
   <section class="card">
     <h2 id="prompt">Kuuntele tehtava</h2>
-    <p class="small" id="feedback">Paina "Soita tehtava".</p>
+    <p class="small" id="feedback" aria-live="polite">Paina "Soita tehtava".</p>
     <p class="small" id="interval-mode">Intervallitila: Melodinen</p>
     <div class="grid">
       <button class="btn" id="play-task" type="button">Soita tehtava</button>
@@ -32,114 +31,12 @@ import quiz from "../content/decks/listening-quiz.json";
   </section>
 
   <script>
-    // @ts-nocheck
-    import { playInterval, playChord, playMetronome, setMasterGain } from "../lib/audio/synth.ts";
-    import { loadSettings } from "../lib/settings.ts";
-    import { addPracticeMinutes, loadProgress, registerSession, saveProgress } from "../lib/progress.ts";
+    import initKuuntele from "../lib/pages/kuuntele";
 
-    let stopMetro = null;
-    let intervalMode = "melodic";
-    const settings = loadSettings();
-    setMasterGain(settings.masterGain);
-    let progress = registerSession();
-
-    const intervals = JSON.parse('{JSON.stringify(quiz.intervals)}');
-    const chords = JSON.parse('{JSON.stringify(quiz.chords)}');
-    const promptEl = document.getElementById("prompt");
-    const feedbackEl = document.getElementById("feedback");
-    const modeEl = document.getElementById("interval-mode");
-    const statsEl = document.getElementById("stats");
-    const choicesEl = document.getElementById("choices");
-    const playTaskBtn = document.getElementById("play-task");
-    const newTaskBtn = document.getElementById("new-task");
-    const toggleIntervalBtn = document.getElementById("toggle-interval");
-
-    let currentTask = null;
-
-    function renderStats() {
-      const ratio = progress.stats.listeningTotal
-        ? Math.round((progress.stats.listeningCorrect / progress.stats.listeningTotal) * 100)
-        : 0;
-      statsEl.textContent = `Kuuntelu: ${progress.stats.listeningCorrect}/${progress.stats.listeningTotal} (${ratio} %)`;
-      modeEl.textContent = `Intervallitila: ${intervalMode === "melodic" ? "Melodinen" : "Harmoninen"}`;
-    }
-
-    function playCurrentTask() {
-      if (!currentTask) return;
-      if (currentTask.kind === "interval") {
-        playInterval(60, currentTask.value.semitones, intervalMode === "harmonic");
-      } else {
-        playChord(60, currentTask.value.quality);
-      }
-    }
-
-    function nextTask() {
-      const kind = Math.random() < 0.5 ? "interval" : "chord";
-      if (kind === "interval") {
-        currentTask = { kind, value: intervals[Math.floor(Math.random() * intervals.length)] };
-        promptEl.textContent = "Tunnista intervalli";
-        choicesEl.innerHTML = "";
-        intervals.forEach((item) => {
-          const b = document.createElement("button");
-          b.className = "btn ghost";
-          b.type = "button";
-          b.textContent = item.label;
-          b.addEventListener("click", () => answer(item.id));
-          choicesEl.appendChild(b);
-        });
-      } else {
-        currentTask = { kind, value: chords[Math.floor(Math.random() * chords.length)] };
-        promptEl.textContent = "Tunnista sointu";
-        choicesEl.innerHTML = "";
-        chords.forEach((item) => {
-          const b = document.createElement("button");
-          b.className = "btn ghost";
-          b.type = "button";
-          b.textContent = item.label;
-          b.addEventListener("click", () => answer(item.id));
-          choicesEl.appendChild(b);
-        });
-      }
-      feedbackEl.textContent = "Paina Soita tehtava ja valitse vastaus.";
-    }
-
-    function answer(selectedId) {
-      if (!currentTask) return;
-      const correct = selectedId === currentTask.value.id;
-      progress = loadProgress();
-      progress.stats.listeningTotal += 1;
-      if (correct) progress.stats.listeningCorrect += 1;
-      saveProgress(progress);
-      progress = addPracticeMinutes(0.45);
-      renderStats();
-      feedbackEl.textContent = correct
-        ? "Oikein!"
-        : `Vaarin. Oikea vastaus: ${currentTask.value.label}.`;
-      window.setTimeout(() => {
-        nextTask();
-        playCurrentTask();
-      }, 700);
-    }
-
-    playTaskBtn.addEventListener("click", () => playCurrentTask());
-    newTaskBtn.addEventListener("click", () => nextTask());
-
-    toggleIntervalBtn.addEventListener("click", () => {
-      intervalMode = intervalMode === "melodic" ? "harmonic" : "melodic";
-      renderStats();
-    });
-
-    document.getElementById("metro").addEventListener("click", () => {
-      if (stopMetro) stopMetro();
-      stopMetro = playMetronome(settings.metronomeBpm, settings.defaultTimeSig);
-    });
-
-    document.getElementById("stop").addEventListener("click", () => {
-      if (stopMetro) stopMetro();
-      stopMetro = null;
-    });
-
-    renderStats();
-    nextTask();
+    const data = {
+      intervals: JSON.parse('{JSON.stringify(quiz.intervals)}'),
+      chords: JSON.parse('{JSON.stringify(quiz.chords)}'),
+    };
+    initKuuntele(data);
   </script>
 </BaseLayout>

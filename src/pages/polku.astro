@@ -73,17 +73,8 @@ const dayPlans = [
   ))}
 
   <script>
-    // @ts-nocheck
-    const toggles = document.querySelectorAll("[data-day-toggle]");
-    toggles.forEach((toggle) => {
-      toggle.addEventListener("click", () => {
-        const index = toggle.getAttribute("data-day-toggle");
-        const panel = document.querySelector(`[data-day-panel="${index}"]`);
-        if (!panel) return;
-        const currentlyOpen = toggle.getAttribute("aria-expanded") === "true";
-        toggle.setAttribute("aria-expanded", currentlyOpen ? "false" : "true");
-        panel.hidden = currentlyOpen;
-      });
-    });
+    import initPolku from "../lib/pages/polku";
+
+    initPolku();
   </script>
 </BaseLayout>

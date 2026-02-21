@@ -28,60 +28,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   </section>
 
   <script>
-    // @ts-nocheck
-    import { loadSettings, saveSettings, resetSettings } from "../lib/settings.ts";
-    import { setMasterGain, playNote } from "../lib/audio/synth.ts";
+    import initAsetukset from "../lib/pages/asetukset";
 
-    const goalEl = document.getElementById("goal");
-    const bpmEl = document.getElementById("bpm");
-    const gainEl = document.getElementById("gain");
-    const goalVal = document.getElementById("goal-value");
-    const bpmVal = document.getElementById("bpm-value");
-    const gainVal = document.getElementById("gain-value");
-    const saveBtn = document.getElementById("save");
-    const resetBtn = document.getElementById("reset-settings");
-
-    function render(current) {
-      goalEl.value = String(current.dailyGoalMin);
-      bpmEl.value = String(current.metronomeBpm);
-      gainEl.value = String(Math.round(current.masterGain * 100));
-      goalVal.textContent = `${current.dailyGoalMin} min`;
-      bpmVal.textContent = `${current.metronomeBpm} BPM`;
-      gainVal.textContent = `${Math.round(current.masterGain * 100)} %`;
-      setMasterGain(current.masterGain);
-    }
-
-    function draftFromInputs() {
-      return {
-        dailyGoalMin: Number(goalEl.value),
-        metronomeBpm: Number(bpmEl.value),
-        masterGain: Number(gainEl.value) / 100,
-      };
-    }
-
-    [goalEl, bpmEl, gainEl].forEach((el) => {
-      el.addEventListener("input", () => {
-        const draft = draftFromInputs();
-        goalVal.textContent = `${draft.dailyGoalMin} min`;
-        bpmVal.textContent = `${draft.metronomeBpm} BPM`;
-        gainVal.textContent = `${Math.round(draft.masterGain * 100)} %`;
-        setMasterGain(draft.masterGain);
-      });
-    });
-
-    saveBtn.addEventListener("click", () => {
-      const next = saveSettings(draftFromInputs());
-      render(next);
-      playNote(72, 0.2);
-    });
-
-    resetBtn.addEventListener("click", () => {
-      const next = resetSettings();
-      render(next);
-      playNote(67, 0.2);
-    });
-
-    render(loadSettings());
+    initAsetukset();
   </script>
 </BaseLayout>
-

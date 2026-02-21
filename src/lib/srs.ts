@@ -15,6 +15,13 @@ export function loadSrs(): Record<string, SrsCard> {
   }
 }
 
+export function buildSrsQueue(now = Date.now()): { due: SrsCard[]; upcoming: SrsCard[] } {
+  const all = Object.values(loadSrs());
+  const due = all.filter((card) => card.dueAt <= now).sort((a, b) => a.dueAt - b.dueAt);
+  const upcoming = all.filter((card) => card.dueAt > now).sort((a, b) => a.dueAt - b.dueAt);
+  return { due, upcoming };
+}
+
 function saveSrs(data: Record<string, SrsCard>): void {
   localStorage.setItem(KEY, JSON.stringify(data));
 }
