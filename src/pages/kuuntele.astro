@@ -31,11 +31,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   </section>
 
   <script>
-    import initKuuntele from "../lib/pages/kuuntele";
+    import initKuuntele, { type QuizData } from "../lib/pages/kuuntele";
+    import quiz from "../content/decks/listening-quiz.json";
 
-    const data = {
-      intervals: JSON.parse('{JSON.stringify(quiz.intervals)}'),
-      chords: JSON.parse('{JSON.stringify(quiz.chords)}'),
+    const data: QuizData = {
+      intervals: quiz.intervals as QuizData["intervals"],
+      chords: quiz.chords as QuizData["chords"],
     };
     initKuuntele(data);
   </script>

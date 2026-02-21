@@ -4,7 +4,7 @@ import { addPracticeMinutes, loadProgress, registerSession, saveProgress } from 
 
 type IntervalItem = { id: string; label: string; semitones: number };
 type ChordItem = { id: string; label: string; quality: "major" | "minor" };
-type QuizData = { intervals: IntervalItem[]; chords: ChordItem[] };
+export type QuizData = { intervals: IntervalItem[]; chords: ChordItem[] };
 
 type Task =
   | { kind: "interval"; value: IntervalItem }

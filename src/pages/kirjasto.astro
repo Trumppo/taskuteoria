@@ -36,8 +36,8 @@ import cards from "../content/library/cards.json";
 
   <script>
     import initKirjasto from "../lib/pages/kirjasto";
+    import miniLessons from "../content/library/mini-lessons.json";
 
-    const lessons = JSON.parse('{JSON.stringify(miniLessons)}');
-    initKirjasto(lessons);
+    initKirjasto(miniLessons);
   </script>
 </BaseLayout>

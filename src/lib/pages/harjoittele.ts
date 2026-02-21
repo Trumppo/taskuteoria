@@ -16,7 +16,7 @@ type RhythmDeck = { pieces: RhythmPiece[]; timeSignatures: TimeSignature[] };
 type KeyQuestion = { prompt: string; options: string[]; correctIndex: number };
 type KeyDeck = { questions: KeyQuestion[] };
 
-type HarjoitteleData = {
+export type HarjoitteleData = {
   notes: NoteItem[];
   rhythmDeck: RhythmDeck;
   keyDeck: KeyDeck;

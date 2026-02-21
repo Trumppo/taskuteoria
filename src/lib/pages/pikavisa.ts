@@ -8,7 +8,7 @@ type ListeningChord = { label: string; quality: "major" | "minor" };
 type KeyQuestion = { prompt: string; options: string[]; correctIndex: number };
 type TimeSignature = { label: string; targetBeats: number };
 
-type QuizData = {
+export type QuizData = {
   notes: NoteItem[];
   intervals: ListeningInterval[];
   chords: ListeningChord[];

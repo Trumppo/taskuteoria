@@ -58,12 +58,15 @@ import keyDeck from "../content/decks/key-signatures.json";
   </section>
 
   <script>
-    import initHarjoittele from "../lib/pages/harjoittele";
+    import initHarjoittele, { type HarjoitteleData } from "../lib/pages/harjoittele";
+    import noteDeck from "../content/decks/note-identification.json";
+    import rhythmDeck from "../content/decks/rhythm-values.json";
+    import keyDeck from "../content/decks/key-signatures.json";
 
-    const data = {
-      notes: JSON.parse('{JSON.stringify(noteDeck.notes)}'),
-      rhythmDeck: JSON.parse('{JSON.stringify(rhythmDeck)}'),
-      keyDeck: JSON.parse('{JSON.stringify(keyDeck)}'),
+    const data: HarjoitteleData = {
+      notes: noteDeck.notes as HarjoitteleData["notes"],
+      rhythmDeck: rhythmDeck as HarjoitteleData["rhythmDeck"],
+      keyDeck: keyDeck as HarjoitteleData["keyDeck"],
     };
     initHarjoittele(data);
   </script>

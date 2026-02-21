@@ -23,14 +23,18 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   </section>
 
   <script>
-    import initPikavisa from "../lib/pages/pikavisa";
+    import initPikavisa, { type QuizData } from "../lib/pages/pikavisa";
+    import noteDeck from "../content/decks/note-identification.json";
+    import listeningDeck from "../content/decks/listening-quiz.json";
+    import keyDeck from "../content/decks/key-signatures.json";
+    import rhythmDeck from "../content/decks/rhythm-values.json";
 
-    const data = {
-      notes: JSON.parse('{JSON.stringify(noteDeck.notes)}'),
-      intervals: JSON.parse('{JSON.stringify(listeningDeck.intervals)}'),
-      chords: JSON.parse('{JSON.stringify(listeningDeck.chords)}'),
-      keyQuestions: JSON.parse('{JSON.stringify(keyDeck.questions)}'),
-      timeSignatures: JSON.parse('{JSON.stringify(rhythmDeck.timeSignatures)}'),
+    const data: QuizData = {
+      notes: noteDeck.notes as QuizData["notes"],
+      intervals: listeningDeck.intervals as QuizData["intervals"],
+      chords: listeningDeck.chords as QuizData["chords"],
+      keyQuestions: keyDeck.questions as QuizData["keyQuestions"],
+      timeSignatures: rhythmDeck.timeSignatures as QuizData["timeSignatures"],
     };
     initPikavisa(data);
   </script>
