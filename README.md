@@ -1,43 +1,36 @@
-# Astro Starter Kit: Minimal
+# TaskuTeoria
 
-```sh
-npm create astro@latest -- --template minimal
-```
+Staattinen, mobiilioptimoitu musiikinteorian harjoittelusovellus.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Ominaisuudet
+- Nuottien tunnistus (välitön palaute)
+- Rytmiharjoitukset:
+  - tap-ajastus (metronomi + ms-tarkkuus)
+  - drag & drop -tahtitehtävä
+- Flashcards + SRS
+- Kuuntelutehtävät (intervalli/sointu)
+- Mini-opetus + 3 pikakysymystä
+- Päiväputki, päivätavoite, minuuttikertymä
+- Offline/PWA (service worker + fallback-sivu)
 
-## 🚀 Project Structure
+## Komennot
+- `npm install`
+- `npm run dev`
+- `npm run build`
+- `npm run preview`
+- `npm run typecheck`
+- `npm run test:run`
+- `npm run verify:static`
+- `npm run smoke:e2e`
+- `npm run check`
 
-Inside of your Astro project, you'll see the following folders and files:
+## CI / Deploy
+- CI: `.github/workflows/ci.yml`
+- GitHub Pages deploy: `.github/workflows/deploy-pages.yml`
+- Netlify-konfiguraatio: `netlify.toml`
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
-
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+## Rakenne
+- `src/pages/` sivut
+- `src/content/` harjoitus- ja teoriadata
+- `src/lib/` sovelluslogiikka (audio, progress, srs, metrics)
+- `public/` manifest, service worker, offline-fallback

@@ -5,11 +5,22 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "typecheck": "astro check",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "smoke:e2e": "node scripts/smoke-e2e.mjs",
+    "check": "npm run typecheck && npm run test:run && npm run build && npm run verify:static && npm run smoke:e2e",
     "verify:static": "node scripts/verify-static.mjs",
     "preview": "astro preview",
     "astro": "astro"
   },
   "dependencies": {
     "astro": "^5.17.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.6",
+    "happy-dom": "^20.7.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.18"
   }
 }
