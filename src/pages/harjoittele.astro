@@ -1,73 +1,32 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import noteDeck from "../content/decks/note-identification.json";
-import keyDeck from "../content/decks/key-signatures.json";
+import { withBase } from "../lib/base";
 ---
 
 <BaseLayout title="Harjoittele | TaskuTeoria" active="harjoittele">
   <section class="card">
-    <h1>{noteDeck.title}</h1>
-    <p>{noteDeck.description} Vastaus annetaan heti ja harjoitus toimii seka diskantilla etta bassolla.</p>
-    <p class="small" id="clef-label">Klaavi: -</p>
-    <div id="staff-wrap" class="staff-wrap" aria-label="Viivasto"></div>
-    <p class="small" id="feedback" aria-live="polite">Aloita harjoitus.</p>
+    <h1>Harjoittele</h1>
+    <p>Valitse yksi osa-alue ja keskity siihen ilman muita osioita samalla sivulla.</p>
   </section>
 
   <section class="card">
-    <div class="grid" id="choices"></div>
-  </section>
-
-  <section class="card">
-    <button class="btn ghost" id="play-btn" type="button">Soita nuotti</button>
-    <p class="small" id="stats"></p>
-  </section>
-
-  <section class="card">
-    <h2>Rytmiharjoitus</h2>
-    <p>Napauta tahtiin metronomin mukana. Harjoitus arpoo tahtilajin 4/4, 3/4 tai 6/8.</p>
-    <p class="small" id="rhythm-sig">Tahtilaji: -</p>
-    <p class="small" id="rhythm-status" aria-live="polite">Valmis. Paina Aloita.</p>
-    <div class="grid">
-      <button class="btn" id="rhythm-start" type="button">Aloita rytmi</button>
-      <button class="btn ghost" id="rhythm-tap" type="button" disabled>NAPUTA</button>
-      <button class="btn ghost" id="rhythm-stop" type="button" disabled>Lopeta</button>
-      <button class="btn ghost" id="rhythm-next" type="button">Arvo tahtilaji</button>
+    <div class="landing-grid">
+      <a class="card tile" href={withBase("nuotit")}>
+        <h3>Nuotit</h3>
+        <p class="small">Tunnista savel viivastolta ja harjoittele klaavit.</p>
+      </a>
+      <a class="card tile" href={withBase("rytmi")}>
+        <h3>Rytmi</h3>
+        <p class="small">Naputus + drag & drop -tahti.</p>
+      </a>
+      <a class="card tile" href={withBase("savellajit")}>
+        <h3>Savellajit</h3>
+        <p class="small">Kysymykset C-duurista ja a-mollista.</p>
+      </a>
     </div>
   </section>
 
   <section class="card">
-    <h2>Tahti drag & drop</h2>
-    <p>Rakenna tahti niin, etta kokonaiskesto vastaa valittua tahtilajia.</p>
-    <div class="grid" id="rhythm-palette"></div>
-    <div id="rhythm-dropzone" class="dropzone" aria-label="Tahtialue" aria-describedby="rhythm-dd-help"></div>
-    <p class="small" id="rhythm-dd-help">Voit lisata nuottiarvot painikkeista tai raahaamalla. Poista napauttamalla korttia.</p>
-    <p class="small" id="rhythm-dd-status" aria-live="polite">Tahti: 0 / 4 iskua</p>
-    <div class="grid">
-      <button class="btn" id="rhythm-dd-check" type="button">Tarkista tahti</button>
-      <button class="btn ghost" id="rhythm-dd-remove" type="button">Poista viimeinen</button>
-      <button class="btn ghost" id="rhythm-dd-reset" type="button">Tyhjenna</button>
-    </div>
+    <a class="btn ghost" href={withBase("valitsin")}>Siirry harjoitusvalitsimeen</a>
   </section>
-
-  <section class="card">
-    <h2>{keyDeck.title}</h2>
-    <p id="key-question"></p>
-    <div class="grid" id="key-options"></div>
-    <p class="small" id="key-feedback" aria-live="polite">Valitse vastaus.</p>
-    <button class="btn ghost" id="key-next" type="button">Seuraava kysymys</button>
-  </section>
-
-  <script>
-    import initHarjoittele, { type HarjoitteleData } from "../lib/pages/harjoittele";
-    import noteDeck from "../content/decks/note-identification.json";
-    import rhythmDeck from "../content/decks/rhythm-values.json";
-    import keyDeck from "../content/decks/key-signatures.json";
-
-    const data: HarjoitteleData = {
-      notes: noteDeck.notes as HarjoitteleData["notes"],
-      rhythmDeck: rhythmDeck as HarjoitteleData["rhythmDeck"],
-      keyDeck: keyDeck as HarjoitteleData["keyDeck"],
-    };
-    initHarjoittele(data);
-  </script>
 </BaseLayout>

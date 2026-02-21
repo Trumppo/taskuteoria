@@ -1,0 +1,29 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import keyDeck from "../content/decks/key-signatures.json";
+---
+
+<BaseLayout title="Savellajit | TaskuTeoria" active="harjoittele" showNav={false}>
+  <section class="card">
+    <h1>{keyDeck.title}</h1>
+    <p>Nopeat kysymykset savellajeista. Yksi kysymys kerrallaan.</p>
+    <p class="small" id="stats"></p>
+  </section>
+
+  <section class="card">
+    <p id="key-question"></p>
+    <div class="grid" id="key-options"></div>
+    <p class="small" id="key-feedback" aria-live="polite">Valitse vastaus.</p>
+    <button class="btn ghost" id="key-next" type="button">Seuraava kysymys</button>
+  </section>
+
+  <script>
+    import initSavellajit, { type SavellajitData } from "../lib/pages/savellajit";
+    import keyDeck from "../content/decks/key-signatures.json";
+
+    const data: SavellajitData = {
+      keyDeck: keyDeck as SavellajitData["keyDeck"],
+    };
+    initSavellajit(data);
+  </script>
+</BaseLayout>

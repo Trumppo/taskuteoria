@@ -1,0 +1,33 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import noteDeck from "../content/decks/note-identification.json";
+---
+
+<BaseLayout title="Nuotit | TaskuTeoria" active="harjoittele" showNav={false}>
+  <section class="card">
+    <h1>{noteDeck.title}</h1>
+    <p>{noteDeck.description} Vastaus annetaan heti ja harjoitus toimii seka diskantilla etta bassolla.</p>
+    <p class="small" id="clef-label">Klaavi: -</p>
+    <div id="staff-wrap" class="staff-wrap" aria-label="Viivasto"></div>
+    <p class="small" id="feedback" aria-live="polite">Aloita harjoitus.</p>
+  </section>
+
+  <section class="card">
+    <div class="grid" id="choices"></div>
+  </section>
+
+  <section class="card">
+    <button class="btn ghost" id="play-btn" type="button">Soita nuotti</button>
+    <p class="small" id="stats"></p>
+  </section>
+
+  <script>
+    import initNuotit, { type NuotitData } from "../lib/pages/nuotit";
+    import noteDeck from "../content/decks/note-identification.json";
+
+    const data: NuotitData = {
+      notes: noteDeck.notes as NuotitData["notes"],
+    };
+    initNuotit(data);
+  </script>
+</BaseLayout>

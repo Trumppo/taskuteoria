@@ -6,7 +6,10 @@ const basePath = process.env.SMOKE_BASE_PATH ?? "/taskuteoria";
 const withBase = (path) => `${basePath}${path}`.replace(/\/{2,}/g, "/");
 const requiredRoutes = [
   { path: withBase("/"), contains: "TaskuTeoria" },
-  { path: withBase("/harjoittele/"), contains: "Nuottien tunnistus" },
+  { path: withBase("/harjoittele/"), contains: "Harjoittele" },
+  { path: withBase("/nuotit/"), contains: "Nuotit" },
+  { path: withBase("/rytmi/"), contains: "Rytmi" },
+  { path: withBase("/savellajit/"), contains: "Savellajit" },
   { path: withBase("/kuuntele/"), contains: "Kuuntelutehtavat" },
   { path: withBase("/kirjasto/"), contains: "Teoriakirjasto" },
 ];
@@ -16,19 +19,14 @@ const preview = spawn("npm", ["run", "preview", "--", "--host", "127.0.0.1", "--
   shell: false,
 });
 
-let started = false;
-preview.stdout.on("data", (chunk) => {
-  const line = chunk.toString();
-  if (line.includes("127.0.0.1:4323")) started = true;
-});
-preview.stderr.on("data", (chunk) => {
-  const line = chunk.toString();
-  if (line.includes("127.0.0.1:4323")) started = true;
-});
-
 async function waitUntilStarted() {
-  for (let i = 0; i < 60; i += 1) {
-    if (started) return;
+  for (let i = 0; i < 120; i += 1) {
+    try {
+      const res = await fetch(baseUrl + withBase("/"), { method: "GET" });
+      if (res.ok) return;
+    } catch {
+      // ignore until server is ready
+    }
     await sleep(250);
   }
   throw new Error("Preview server did not start in time");

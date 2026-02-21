@@ -3,20 +3,69 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import { withBase } from "../lib/base";
 ---
 
-<BaseLayout title="TaskuTeoria" active="harjoittele">
-  <section class="card">
-    <h1>TaskuTeoria</h1>
-    <p>Valitse osa-alue ja aloita harjoitus.</p>
+<BaseLayout title="TaskuTeoria" active="" showNav={false}>
+  <section class="hero">
+    <div class="hero-inner">
+      <div>
+        <p class="eyebrow">Mobiilioppiminen musiikinteoriasta</p>
+        <h1>TaskuTeoria</h1>
+        <p class="lead">Lyhyet, selkeat harjoitukset nuoteista, rytmista ja savellajeista. Aloita yhdella napautuksella ja etene omaan tahtiin.</p>
+        <div class="hero-actions">
+          <a class="btn" href={withBase("valitsin")}>Aloita harjoittelu</a>
+          <a class="btn ghost" href={withBase("polku")}>Aloita 14 paivan polku</a>
+        </div>
+      </div>
+      <div class="hero-panel">
+        <p class="small">Tanaan 5-8 min</p>
+        <h2>Valmis nopea aloitus</h2>
+        <ul class="hero-list">
+          <li>Nuotit: tunnista viivastolta</li>
+          <li>Rytmi: naputus + drag & drop</li>
+          <li>Savellajit: C-duuri ja a-molli</li>
+        </ul>
+        <a class="btn ghost" href={withBase("valitsin")}>Valitse harjoitus</a>
+      </div>
+    </div>
   </section>
 
-  <section class="card grid">
-    <a class="btn" href={withBase("valitsin")}>Harjoitusvalitsin</a>
-    <a class="btn ghost" href={withBase("harjoittele")}>Nuotit, rytmi, savellajit</a>
-    <a class="btn ghost" href={withBase("kuuntele")}>Kuuntelu</a>
-    <a class="btn ghost" href={withBase("kortit")}>Kortit (SRS)</a>
-    <a class="btn ghost" href={withBase("pikavisa")}>Pikavisa</a>
-    <a class="btn ghost" href={withBase("polku")}>14 paivan polku</a>
-    <a class="btn ghost" href={withBase("kirjasto")}>Mini-opetus</a>
-    <a class="btn ghost" href={withBase("asetukset")}>Asetukset</a>
+  <section class="card">
+    <h2>Aloita osiosta</h2>
+    <p>Jokainen harjoitus on oma selkea alueensa. Valitse yksi ja etene ilman hairioita.</p>
+    <div class="landing-grid">
+      <a class="card tile" href={withBase("nuotit")}>
+        <h3>Nuotit</h3>
+        <p class="small">Tunnista savel viivastolta diskantissa ja bassossa.</p>
+      </a>
+      <a class="card tile" href={withBase("rytmi")}>
+        <h3>Rytmi</h3>
+        <p class="small">Naputa metronomin mukana ja rakenna tahtia.</p>
+      </a>
+      <a class="card tile" href={withBase("savellajit")}>
+        <h3>Savellajit</h3>
+        <p class="small">Harjoittele C-duuri ja a-molli nopeilla kysymyksilla.</p>
+      </a>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Muut harjoitteet</h2>
+    <div class="landing-grid">
+      <a class="card tile" href={withBase("kuuntele")}>
+        <h3>Kuuntelu</h3>
+        <p class="small">Intervallit ja soinnut korvakuulolta.</p>
+      </a>
+      <a class="card tile" href={withBase("kortit")}>
+        <h3>Kortit</h3>
+        <p class="small">Spaced repetition -kortit muistille.</p>
+      </a>
+      <a class="card tile" href={withBase("pikavisa")}>
+        <h3>Pikavisa</h3>
+        <p class="small">Nopea mixi kaikista osa-alueista.</p>
+      </a>
+      <a class="card tile" href={withBase("kirjasto")}>
+        <h3>Kirjasto</h3>
+        <p class="small">Mini-opetus ja kertaukset.</p>
+      </a>
+    </div>
   </section>
 </BaseLayout>

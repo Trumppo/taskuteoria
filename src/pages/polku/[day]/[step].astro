@@ -1,0 +1,284 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import learningPath from "../../../content/path/14-day.json";
+import noteDeck from "../../../content/decks/note-identification.json";
+import keyDeck from "../../../content/decks/key-signatures.json";
+import flashcards from "../../../content/decks/flashcards.json";
+import cards from "../../../content/library/cards.json";
+import { withBase } from "../../../lib/base";
+
+export function getStaticPaths() {
+  return learningPath.days.flatMap((day) =>
+    day.steps.map((step, index) => ({
+      params: { day: day.id, step: step.key },
+      props: { day, step, stepIndex: index, stepCount: day.steps.length },
+    })),
+  );
+}
+
+const { day, step, stepIndex, stepCount } = Astro.props;
+const nextStep = day.steps[stepIndex + 1];
+---
+
+<BaseLayout title={`${day.title} | ${step.label} | TaskuTeoria`} active="polku" showNav={false}>
+  <section class="card">
+    <p class="eyebrow">14 paivan polku</p>
+    <h1>{day.title}</h1>
+    <p>{step.label}</p>
+    <p class="small">Vaihe {stepIndex + 1}/{stepCount}</p>
+    <div class="grid">
+      <a class="btn ghost" href={withBase(`polku/${day.id}`)}>Paivan valikko</a>
+      {nextStep && <a class="btn" href={withBase(`polku/${day.id}/${nextStep.key}`)}>Seuraava vaihe</a>}
+    </div>
+  </section>
+
+  <script define:vars={{ dayId: day.id, stepKey: step.key }} is:inline>
+    import { markStepCompleted } from "../../../lib/pathProgress";
+
+    markStepCompleted(dayId, stepKey);
+  </script>
+
+  {step.kind === "nuotit" && (
+    <>
+      <section class="card">
+        <h2>{noteDeck.title}</h2>
+        <p>{noteDeck.description} Vastaus annetaan heti ja harjoitus toimii seka diskantilla etta bassolla.</p>
+        <p class="small" id="clef-label">Klaavi: -</p>
+        <div id="staff-wrap" class="staff-wrap" aria-label="Viivasto"></div>
+        <p class="small" id="feedback" aria-live="polite">Aloita harjoitus.</p>
+      </section>
+
+      <section class="card">
+        <div class="grid" id="choices"></div>
+      </section>
+
+      <section class="card">
+        <button class="btn ghost" id="play-btn" type="button">Soita nuotti</button>
+        <p class="small" id="stats"></p>
+      </section>
+
+      <script>
+        import initNuotit, { type NuotitData } from "../../../lib/pages/nuotit";
+        import noteDeck from "../../../content/decks/note-identification.json";
+
+        const data: NuotitData = {
+          notes: noteDeck.notes as NuotitData["notes"],
+        };
+        initNuotit(data);
+      </script>
+    </>
+  )}
+
+  {step.kind === "rytmi" && (
+    <>
+      <section class="card">
+        <h2>Rytmi</h2>
+        <p>Naputa metronomin mukana ja rakenna tahtia. Yksi osio kerrallaan, selkea fokus.</p>
+        <p class="small" id="stats"></p>
+      </section>
+
+      <section class="card">
+        <h3>Tap-harjoitus</h3>
+        <p>Napauta tahtiin metronomin mukana. Harjoitus arpoo tahtilajin 4/4, 3/4 tai 6/8.</p>
+        <p class="small" id="rhythm-sig">Tahtilaji: -</p>
+        <p class="small" id="rhythm-status" aria-live="polite">Valmis. Paina Aloita.</p>
+        <div class="grid">
+          <button class="btn" id="rhythm-start" type="button">Aloita rytmi</button>
+          <button class="btn ghost" id="rhythm-tap" type="button" disabled>NAPUTA</button>
+          <button class="btn ghost" id="rhythm-stop" type="button" disabled>Lopeta</button>
+          <button class="btn ghost" id="rhythm-next" type="button">Arvo tahtilaji</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <h3>Tahti drag & drop</h3>
+        <p>Rakenna tahti niin, etta kokonaiskesto vastaa valittua tahtilajia.</p>
+        <div class="grid" id="rhythm-palette"></div>
+        <div id="rhythm-dropzone" class="dropzone" aria-label="Tahtialue" aria-describedby="rhythm-dd-help"></div>
+        <p class="small" id="rhythm-dd-help">Voit lisata nuottiarvot painikkeista tai raahaamalla. Poista napauttamalla korttia.</p>
+        <p class="small" id="rhythm-dd-status" aria-live="polite">Tahti: 0 / 4 iskua</p>
+        <div class="grid">
+          <button class="btn" id="rhythm-dd-check" type="button">Tarkista tahti</button>
+          <button class="btn ghost" id="rhythm-dd-remove" type="button">Poista viimeinen</button>
+          <button class="btn ghost" id="rhythm-dd-reset" type="button">Tyhjenna</button>
+        </div>
+      </section>
+
+      <script>
+        import initRytmi, { type RytmiData } from "../../../lib/pages/rytmi";
+        import rhythmDeck from "../../../content/decks/rhythm-values.json";
+
+        const data: RytmiData = {
+          rhythmDeck: rhythmDeck as RytmiData["rhythmDeck"],
+        };
+        initRytmi(data);
+      </script>
+    </>
+  )}
+
+  {step.kind === "savellajit" && (
+    <>
+      <section class="card">
+        <h2>{keyDeck.title}</h2>
+        <p>Nopeat kysymykset savellajeista. Yksi kysymys kerrallaan.</p>
+        <p class="small" id="stats"></p>
+      </section>
+
+      <section class="card">
+        <p id="key-question"></p>
+        <div class="grid" id="key-options"></div>
+        <p class="small" id="key-feedback" aria-live="polite">Valitse vastaus.</p>
+        <button class="btn ghost" id="key-next" type="button">Seuraava kysymys</button>
+      </section>
+
+      <script>
+        import initSavellajit, { type SavellajitData } from "../../../lib/pages/savellajit";
+        import keyDeck from "../../../content/decks/key-signatures.json";
+
+        const data: SavellajitData = {
+          keyDeck: keyDeck as SavellajitData["keyDeck"],
+        };
+        initSavellajit(data);
+      </script>
+    </>
+  )}
+
+  {step.kind === "kuuntele" && (
+    <>
+      <section class="card">
+        <h2 id="prompt">Kuuntele tehtava</h2>
+        <p class="small" id="feedback" aria-live="polite">Paina "Soita tehtava".</p>
+        <p class="small" id="interval-mode">Intervallitila: Melodinen</p>
+        <div class="grid">
+          <button class="btn" id="play-task" type="button">Soita tehtava</button>
+          <button class="btn ghost" id="new-task" type="button">Uusi tehtava</button>
+          <button class="btn ghost" id="toggle-interval" type="button">Vaihda melodinen</button>
+          <button class="btn ghost" id="metro" type="button">Metronomi</button>
+          <button class="btn ghost" id="stop" type="button">Pysayta</button>
+        </div>
+        <p class="small" id="stats"></p>
+      </section>
+
+      <section class="card">
+        <div class="grid" id="choices"></div>
+      </section>
+
+      <script>
+        import initKuuntele, { type QuizData } from "../../../lib/pages/kuuntele";
+        import quiz from "../../../content/decks/listening-quiz.json";
+
+        const data: QuizData = {
+          intervals: quiz.intervals as QuizData["intervals"],
+          chords: quiz.chords as QuizData["chords"],
+        };
+        initKuuntele(data);
+      </script>
+    </>
+  )}
+
+  {step.kind === "kortit" && (
+    <>
+      <section class="card">
+        <h2>Flashcards</h2>
+        <p>Tiesin / En tiennyt -malli. Toistovaly tallennetaan localStorageen.</p>
+        <p class="small" id="status" aria-live="polite"></p>
+        <h3 id="front">{flashcards[0].front}</h3>
+        <p id="back" class="small" hidden>{flashcards[0].back}</p>
+      </section>
+
+      <section class="card grid">
+        <button id="show" type="button" class="btn ghost">Nayta vastaus</button>
+        <button id="knew" type="button" class="btn">Tiesin</button>
+        <button id="didnt" type="button" class="btn ghost">En tiennyt</button>
+      </section>
+
+      <script>
+        import initKortit from "../../../lib/pages/kortit";
+        import deck from "../../../content/decks/flashcards.json";
+
+        initKortit(deck);
+      </script>
+    </>
+  )}
+
+  {step.kind === "pikavisa" && (
+    <>
+      <section class="card">
+        <h2>Pikavisa</h2>
+        <p>Valitse oikea vastaus. 5 kysymysta, nopea rytmi.</p>
+      </section>
+
+      <section class="card">
+        <p class="small" id="quiz-progress"></p>
+        <h2 id="quiz-question">Ladataan...</h2>
+        <p class="small" id="quiz-type"></p>
+        <div class="grid" id="quiz-options"></div>
+        <p class="small" id="quiz-feedback" aria-live="polite">Valitse vastaus.</p>
+      </section>
+
+      <section class="card grid">
+        <button class="btn" id="quiz-play" type="button">Soita tehtava</button>
+        <button class="btn ghost" id="quiz-next" type="button">Seuraava</button>
+      </section>
+
+      <script>
+        import initPikavisa, { type QuizData } from "../../../lib/pages/pikavisa";
+        import noteDeck from "../../../content/decks/note-identification.json";
+        import listeningDeck from "../../../content/decks/listening-quiz.json";
+        import keyDeck from "../../../content/decks/key-signatures.json";
+        import rhythmDeck from "../../../content/decks/rhythm-values.json";
+
+        const data: QuizData = {
+          notes: noteDeck.notes as QuizData["notes"],
+          intervals: listeningDeck.intervals as QuizData["intervals"],
+          chords: listeningDeck.chords as QuizData["chords"],
+          keyQuestions: keyDeck.questions as QuizData["keyQuestions"],
+          timeSignatures: rhythmDeck.timeSignatures as QuizData["timeSignatures"],
+        };
+        initPikavisa(data);
+      </script>
+    </>
+  )}
+
+  {step.kind === "kirjasto" && (
+    <>
+      <section class="card">
+        <h2>Teoriakirjasto</h2>
+        <p>Mini-opetukset 30-90 sekunnin paloissa + 3 valitonta harjoitusta per aihe.</p>
+      </section>
+
+      {cards.map((card) => (
+        <section class="card">
+          <h3>{card.title}</h3>
+          <p>{card.body}</p>
+        </section>
+      ))}
+
+      <section class="card">
+        <h3>Mini-opetus + 3 harjoitusta</h3>
+        <p class="small" id="mini-meta">Lyhyt kertaus ja nopeat kysymykset.</p>
+        <h4 id="mini-title"></h4>
+        <p id="mini-summary"></p>
+        <p class="small" id="mini-progress" aria-live="polite"></p>
+      </section>
+
+      <section class="card">
+        <p id="mini-question"></p>
+        <div class="grid" id="mini-options"></div>
+        <p class="small" id="mini-feedback" aria-live="polite"></p>
+      </section>
+
+      <section class="card grid">
+        <button class="btn ghost" id="mini-next-question" type="button">Seuraava kysymys</button>
+        <button class="btn" id="mini-next-lesson" type="button">Seuraava mini-opetus</button>
+      </section>
+
+      <script>
+        import initKirjasto from "../../../lib/pages/kirjasto";
+        import miniLessons from "../../../content/library/mini-lessons.json";
+
+        initKirjasto(miniLessons);
+      </script>
+    </>
+  )}
+</BaseLayout>

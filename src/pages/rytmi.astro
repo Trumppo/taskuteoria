@@ -1,0 +1,48 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Rytmi | TaskuTeoria" active="harjoittele" showNav={false}>
+  <section class="card">
+    <h1>Rytmi</h1>
+    <p>Naputa metronomin mukana ja rakenna tahtia. Yksi osio kerrallaan, selkea fokus.</p>
+    <p class="small" id="stats"></p>
+  </section>
+
+  <section class="card">
+    <h2>Tap-harjoitus</h2>
+    <p>Napauta tahtiin metronomin mukana. Harjoitus arpoo tahtilajin 4/4, 3/4 tai 6/8.</p>
+    <p class="small" id="rhythm-sig">Tahtilaji: -</p>
+    <p class="small" id="rhythm-status" aria-live="polite">Valmis. Paina Aloita.</p>
+    <div class="grid">
+      <button class="btn" id="rhythm-start" type="button">Aloita rytmi</button>
+      <button class="btn ghost" id="rhythm-tap" type="button" disabled>NAPUTA</button>
+      <button class="btn ghost" id="rhythm-stop" type="button" disabled>Lopeta</button>
+      <button class="btn ghost" id="rhythm-next" type="button">Arvo tahtilaji</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Tahti drag & drop</h2>
+    <p>Rakenna tahti niin, etta kokonaiskesto vastaa valittua tahtilajia.</p>
+    <div class="grid" id="rhythm-palette"></div>
+    <div id="rhythm-dropzone" class="dropzone" aria-label="Tahtialue" aria-describedby="rhythm-dd-help"></div>
+    <p class="small" id="rhythm-dd-help">Voit lisata nuottiarvot painikkeista tai raahaamalla. Poista napauttamalla korttia.</p>
+    <p class="small" id="rhythm-dd-status" aria-live="polite">Tahti: 0 / 4 iskua</p>
+    <div class="grid">
+      <button class="btn" id="rhythm-dd-check" type="button">Tarkista tahti</button>
+      <button class="btn ghost" id="rhythm-dd-remove" type="button">Poista viimeinen</button>
+      <button class="btn ghost" id="rhythm-dd-reset" type="button">Tyhjenna</button>
+    </div>
+  </section>
+
+  <script>
+    import initRytmi, { type RytmiData } from "../lib/pages/rytmi";
+    import rhythmDeck from "../content/decks/rhythm-values.json";
+
+    const data: RytmiData = {
+      rhythmDeck: rhythmDeck as RytmiData["rhythmDeck"],
+    };
+    initRytmi(data);
+  </script>
+</BaseLayout>

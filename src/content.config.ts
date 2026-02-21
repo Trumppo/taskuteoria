@@ -86,8 +86,16 @@ const pathSchema = z.object({
   intro: z.string(),
   days: z.array(
     z.object({
-      range: z.string(),
-      focus: z.string(),
+      id: z.string(),
+      title: z.string(),
+      summary: z.string(),
+      steps: z.array(
+        z.object({
+          key: z.string(),
+          label: z.string(),
+          kind: z.enum(["nuotit", "rytmi", "savellajit", "kuuntele", "kortit", "pikavisa", "kirjasto"]),
+        }),
+      ),
     }),
   ),
 });

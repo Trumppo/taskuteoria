@@ -5,9 +5,10 @@ import { withBase } from "../lib/base";
 interface Props {
   title: string;
   active?: string;
+  showNav?: boolean;
 }
 
-const { title, active = "" } = Astro.props;
+const { title, active = "", showNav = true } = Astro.props;
 
 const nav = [
   { href: withBase("harjoittele"), label: "Harjoittele", key: "harjoittele" },
@@ -28,15 +29,17 @@ const nav = [
     <link rel="manifest" href={withBase("manifest.webmanifest")} />
     <title>{title}</title>
   </head>
-  <body>
+  <body class={showNav ? "with-nav" : "no-nav"}>
     <main>
       <slot />
     </main>
-    <nav class="bottom-nav" aria-label="Pohjanavigaatio">
-      {nav.map((item) => (
-        <a href={item.href} class={active === item.key ? "active" : ""}>{item.label}</a>
-      ))}
-    </nav>
+    {showNav && (
+      <nav class="bottom-nav" aria-label="Pohjanavigaatio">
+        {nav.map((item) => (
+          <a href={item.href} class={active === item.key ? "active" : ""}>{item.label}</a>
+        ))}
+      </nav>
+    )}
     <script define:vars={{ swPath: withBase("sw.js") }} is:inline>
       if ("serviceWorker" in navigator) {
         window.addEventListener("load", () => navigator.serviceWorker.register(swPath));

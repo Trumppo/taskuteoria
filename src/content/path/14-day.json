@@ -2,13 +2,146 @@
   "title": "14 paivan oppimispolku",
   "intro": "Yksi lyhyt sessio paivassa riittaa. Tavoite: tasainen, kevyt kehitys.",
   "days": [
-    { "range": "Paiva 1-3", "focus": "Diskantti ja bassoklaavi" },
-    { "range": "Paiva 4-6", "focus": "Rytmi ja tahtilajit" },
-    { "range": "Paiva 7", "focus": "Kertaus" },
-    { "range": "Paiva 8-9", "focus": "Intervallit (nako + kuulo)" },
-    { "range": "Paiva 10-11", "focus": "Savellajit" },
-    { "range": "Paiva 12-13", "focus": "Kolmisoinnut ja kuuntelu" },
-    { "range": "Paiva 14", "focus": "Loppumix" }
+    {
+      "id": "paiva-1",
+      "title": "Paiva 1",
+      "summary": "Diskantti ja bassoklaavi",
+      "steps": [
+        { "key": "nuotit", "label": "Nuotit: perusviivasto", "kind": "nuotit" },
+        { "key": "rytmi-44", "label": "Rytmi: 4/4 perusisku", "kind": "rytmi" },
+        { "key": "savellajit-c", "label": "Savellajit: C-duuri", "kind": "savellajit" }
+      ]
+    },
+    {
+      "id": "paiva-2",
+      "title": "Paiva 2",
+      "summary": "Nuotit ja rytmi",
+      "steps": [
+        { "key": "nuotit-basso", "label": "Nuotit: bassoalue", "kind": "nuotit" },
+        { "key": "rytmi-34", "label": "Rytmi: 3/4 perusisku", "kind": "rytmi" },
+        { "key": "kortit-perus", "label": "Kortit: perusasiat", "kind": "kortit" }
+      ]
+    },
+    {
+      "id": "paiva-3",
+      "title": "Paiva 3",
+      "summary": "Nuotit ja savellajit",
+      "steps": [
+        { "key": "nuotit-laajennus", "label": "Nuotit: laajennettu viivasto", "kind": "nuotit" },
+        { "key": "savellajit-ammolli", "label": "Savellajit: a-molli", "kind": "savellajit" },
+        { "key": "kirjasto-nuottiarvot", "label": "Mini-opetus: nuottiarvot", "kind": "kirjasto" }
+      ]
+    },
+    {
+      "id": "paiva-4",
+      "title": "Paiva 4",
+      "summary": "Rytmi ja tahtilajit",
+      "steps": [
+        { "key": "rytmi-68", "label": "Rytmi: 6/8 tuntuma", "kind": "rytmi" },
+        { "key": "rytmi-tahti", "label": "Rytmi: rakenna tahti", "kind": "rytmi" },
+        { "key": "kirjasto-tahtilajit", "label": "Mini-opetus: tahtilajit", "kind": "kirjasto" }
+      ]
+    },
+    {
+      "id": "paiva-5",
+      "title": "Paiva 5",
+      "summary": "Rytmi ja nuotit",
+      "steps": [
+        { "key": "rytmi-44-2", "label": "Rytmi: 4/4 tarkkuus", "kind": "rytmi" },
+        { "key": "nuotit-nopeus", "label": "Nuotit: nopea tunnistus", "kind": "nuotit" },
+        { "key": "kortit-rytmi", "label": "Kortit: rytmikertaus", "kind": "kortit" }
+      ]
+    },
+    {
+      "id": "paiva-6",
+      "title": "Paiva 6",
+      "summary": "Rytmi ja savellajit",
+      "steps": [
+        { "key": "rytmi-34-2", "label": "Rytmi: 3/4 tarkkuus", "kind": "rytmi" },
+        { "key": "savellajit-kertaus", "label": "Savellajit: kertaus", "kind": "savellajit" },
+        { "key": "pikavisa-rytmi", "label": "Pikavisa: rytmi-painotteinen", "kind": "pikavisa" }
+      ]
+    },
+    {
+      "id": "paiva-7",
+      "title": "Paiva 7",
+      "summary": "Kertaus",
+      "steps": [
+        { "key": "pikavisa", "label": "Pikavisa: sekoitus", "kind": "pikavisa" },
+        { "key": "kortit", "label": "Kortit: kertaavat", "kind": "kortit" },
+        { "key": "kirjasto", "label": "Mini-opetus: kertaus", "kind": "kirjasto" }
+      ]
+    },
+    {
+      "id": "paiva-8",
+      "title": "Paiva 8",
+      "summary": "Intervallit (nako + kuulo)",
+      "steps": [
+        { "key": "kuuntele-intervallit", "label": "Kuuntelu: intervallit", "kind": "kuuntele" },
+        { "key": "kuuntele-harmoninen", "label": "Kuuntelu: harmoninen", "kind": "kuuntele" },
+        { "key": "kortit-intervallit", "label": "Kortit: intervallit", "kind": "kortit" }
+      ]
+    },
+    {
+      "id": "paiva-9",
+      "title": "Paiva 9",
+      "summary": "Intervallit ja savellajit",
+      "steps": [
+        { "key": "kuuntele-sekstit", "label": "Kuuntelu: sekstit", "kind": "kuuntele" },
+        { "key": "nuotit-kertaus", "label": "Nuotit: kertaus", "kind": "nuotit" },
+        { "key": "savellajit-kertaus-2", "label": "Savellajit: kertaus", "kind": "savellajit" }
+      ]
+    },
+    {
+      "id": "paiva-10",
+      "title": "Paiva 10",
+      "summary": "Savellajit",
+      "steps": [
+        { "key": "savellajit-syvennys", "label": "Savellajit: syvennys", "kind": "savellajit" },
+        { "key": "pikavisa-savellajit", "label": "Pikavisa: savellajit", "kind": "pikavisa" },
+        { "key": "kortit-savellajit", "label": "Kortit: savellajit", "kind": "kortit" }
+      ]
+    },
+    {
+      "id": "paiva-11",
+      "title": "Paiva 11",
+      "summary": "Savellajit ja kuuntelu",
+      "steps": [
+        { "key": "savellajit-2", "label": "Savellajit: nopea", "kind": "savellajit" },
+        { "key": "kirjasto-savellajit", "label": "Mini-opetus: savellajit", "kind": "kirjasto" },
+        { "key": "kuuntele-intervallit-2", "label": "Kuuntelu: intervallit", "kind": "kuuntele" }
+      ]
+    },
+    {
+      "id": "paiva-12",
+      "title": "Paiva 12",
+      "summary": "Kolmisoinnut ja kuuntelu",
+      "steps": [
+        { "key": "kuuntele-soinnut", "label": "Kuuntelu: duuri/molli", "kind": "kuuntele" },
+        { "key": "rytmi-kertaus", "label": "Rytmi: kertaus", "kind": "rytmi" },
+        { "key": "nuotit-kertaus-2", "label": "Nuotit: kertaus", "kind": "nuotit" }
+      ]
+    },
+    {
+      "id": "paiva-13",
+      "title": "Paiva 13",
+      "summary": "Kolmisoinnut ja sekoitus",
+      "steps": [
+        { "key": "kuuntele-soinnut-2", "label": "Kuuntelu: soinnut", "kind": "kuuntele" },
+        { "key": "pikavisa-sekoitus", "label": "Pikavisa: sekoitus", "kind": "pikavisa" },
+        { "key": "kortit-kertaus", "label": "Kortit: kertaus", "kind": "kortit" }
+      ]
+    },
+    {
+      "id": "paiva-14",
+      "title": "Paiva 14",
+      "summary": "Loppumix",
+      "steps": [
+        { "key": "pikavisa-loppu", "label": "Pikavisa: loppumix", "kind": "pikavisa" },
+        { "key": "kuuntele-loppu", "label": "Kuuntelu: loppu", "kind": "kuuntele" },
+        { "key": "kortit-loppu", "label": "Kortit: loppu", "kind": "kortit" },
+        { "key": "kirjasto-loppu", "label": "Mini-opetus: loppu", "kind": "kirjasto" }
+      ]
+    }
   ]
 }
-

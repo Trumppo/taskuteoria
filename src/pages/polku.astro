@@ -2,51 +2,6 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import learningPath from "../content/path/14-day.json";
 import { withBase } from "../lib/base";
-
-const dayPlans = [
-  {
-    range: "Paiva 1-3",
-    focus: "Diskantti ja bassoklaavi",
-    steps: ["Nuottitunnistus viivastolta", "Nuotin toisto", "2 min kertaus"],
-    startHref: withBase("harjoittele")
-  },
-  {
-    range: "Paiva 4-6",
-    focus: "Rytmi ja tahtilajit",
-    steps: ["Tap-harjoitus 4/4-3/4-6/8", "Tahti drag & drop", "Rytmipikakertaus"],
-    startHref: withBase("harjoittele")
-  },
-  {
-    range: "Paiva 7",
-    focus: "Kertaus",
-    steps: ["Pikavisa 5 kysymysta", "Heikoin osa-alue uusiksi"],
-    startHref: withBase("pikavisa")
-  },
-  {
-    range: "Paiva 8-9",
-    focus: "Intervallit (nako + kuulo)",
-    steps: ["Kuuntelu: intervallit", "Vaihda melodinen/harmoninen", "Toista vaikeat"],
-    startHref: withBase("kuuntele")
-  },
-  {
-    range: "Paiva 10-11",
-    focus: "Savellajit",
-    steps: ["C-duuri / a-molli kysymykset", "Pikavisa key-kysymykset"],
-    startHref: withBase("harjoittele")
-  },
-  {
-    range: "Paiva 12-13",
-    focus: "Kolmisoinnut ja kuuntelu",
-    steps: ["Kuuntelu: duuri/molli", "Intervallit + sointu vuorottain"],
-    startHref: withBase("kuuntele")
-  },
-  {
-    range: "Paiva 14",
-    focus: "Loppumix",
-    steps: ["Pikavisa", "Flashcards", "Mini-opetus kertaus"],
-    startHref: withBase("pikavisa")
-  }
-];
 ---
 
 <BaseLayout title="Polku | TaskuTeoria" active="polku">
@@ -56,18 +11,18 @@ const dayPlans = [
     <p class="small">Klikkaa paivan otsikkoa avataksesi harjoitukset.</p>
   </section>
 
-  {dayPlans.map((day, idx) => (
+  {learningPath.days.map((day, idx) => (
     <section class="card day-card">
       <button class="day-toggle" type="button" data-day-toggle={idx} aria-expanded="false">
-        <strong>{day.range}</strong>: {day.focus}
+        <strong>{day.title}</strong>: {day.summary}
       </button>
       <div class="day-panel" data-day-panel={idx} hidden>
         <ul>
           {day.steps.map((step) => (
-            <li>{step}</li>
+            <li>{step.label}</li>
           ))}
         </ul>
-        <a class="btn" href={day.startHref}>Aloita paivan harjoitukset</a>
+        <a class="btn" href={withBase(`polku/${day.id}`)}>Aloita paiva</a>
       </div>
     </section>
   ))}

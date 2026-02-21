@@ -1,0 +1,64 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import learningPath from "../../../content/path/14-day.json";
+import { withBase } from "../../../lib/base";
+
+export function getStaticPaths() {
+  return learningPath.days.map((day) => ({
+    params: { day: day.id },
+    props: { day },
+  }));
+}
+
+const { day } = Astro.props;
+---
+
+<BaseLayout title={`${day.title} | Polku | TaskuTeoria`} active="polku">
+  <section class="card">
+    <p class="eyebrow">14 paivan polku</p>
+    <h1>{day.title}</h1>
+    <p>{day.summary}</p>
+    <p class="small">Valitse paivan askel. Voit hypata mihin tahansa kohtaan.</p>
+    <div class="grid">
+      <a class="btn" id="resume-link" href={withBase(`polku/${day.id}/${day.steps[0].key}`)}>Jatka viimeisimmasta</a>
+      <a class="btn ghost" href={withBase("polku")}>Takaisin polkuun</a>
+    </div>
+    <p class="small" id="resume-status"></p>
+  </section>
+
+  <section class="card">
+    <div class="landing-grid">
+      {day.steps.map((step, index) => (
+        <a class="card tile" data-step-key={step.key} href={withBase(`polku/${day.id}/${step.key}`)}>
+          <h3>{step.label}</h3>
+          <p class="small">Vaihe {index + 1}/{day.steps.length}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+  <script define:vars={{ dayId: day.id }} is:inline>
+    import { getDayProgress } from "../../../lib/pathProgress";
+
+    const resumeLink = document.getElementById("resume-link");
+    const resumeStatus = document.getElementById("resume-status");
+    const progress = getDayProgress(dayId);
+
+    if (resumeLink && progress?.lastStep) {
+      resumeLink.setAttribute("href", progress.lastStep);
+      if (resumeStatus) {
+        resumeStatus.textContent = `Jatka kohdasta: ${progress.lastStep}`;
+      }
+    } else if (resumeStatus) {
+      resumeStatus.textContent = "Ei tallennettua etenemista. Aloita ensimmaisesta vaiheesta.";
+    }
+
+    const completed = new Set(progress?.completed ?? []);
+    document.querySelectorAll("[data-step-key]").forEach((node) => {
+      if (!(node instanceof HTMLElement)) return;
+      const key = node.getAttribute("data-step-key");
+      if (key && completed.has(key)) {
+        node.classList.add("is-complete");
+      }
+    });
+  </script>
+</BaseLayout>
