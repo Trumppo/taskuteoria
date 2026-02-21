@@ -36,7 +36,10 @@ import miniLessons from "../content/library/mini-lessons.json";
   </section>
 
   <script type="module">
+    import { addPracticeMinutes, registerSession } from "../lib/progress.ts";
+
     const lessons = JSON.parse('{JSON.stringify(miniLessons)}');
+    registerSession();
     const titleEl = document.getElementById("mini-title");
     const summaryEl = document.getElementById("mini-summary");
     const metaEl = document.getElementById("mini-meta");
@@ -79,6 +82,7 @@ import miniLessons from "../content/library/mini-lessons.json";
           answeredCount += 1;
           const ok = idx === q.correctIndex;
           if (ok) correctCount += 1;
+          addPracticeMinutes(0.3);
           feedbackEl.textContent = ok ? "Oikein!" : `Vaarin. Oikea oli: ${q.options[q.correctIndex]}.`;
           Array.from(optionsEl.querySelectorAll("button")).forEach((node) => {
             node.disabled = true;

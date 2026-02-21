@@ -32,7 +32,7 @@ import quiz from "../content/decks/listening-quiz.json";
   <script type="module">
     import { playInterval, playChord, playMetronome, setMasterGain } from "../lib/audio/synth.ts";
     import { loadSettings } from "../lib/settings.ts";
-    import { loadProgress, registerSession, saveProgress } from "../lib/progress.ts";
+    import { addPracticeMinutes, loadProgress, registerSession, saveProgress } from "../lib/progress.ts";
 
     let stopMetro = null;
     const settings = loadSettings();
@@ -103,6 +103,7 @@ import quiz from "../content/decks/listening-quiz.json";
       progress.stats.listeningTotal += 1;
       if (correct) progress.stats.listeningCorrect += 1;
       saveProgress(progress);
+      progress = addPracticeMinutes(0.45);
       renderStats();
       feedbackEl.textContent = correct
         ? "Oikein!"

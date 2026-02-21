@@ -15,6 +15,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   <section class="card">
     <h2>Taman paivan fokus</h2>
     <p class="small" id="daily-goal">Paivan tavoite: 8 min</p>
+    <p class="small" id="daily-progress">Tanaan harjoiteltu: 0 min</p>
+    <p class="small" id="daily-done">Paiva valmis: Ei viela</p>
     <p class="small" id="streak">Putki: 0 paivaa</p>
     <p class="small" id="accuracy">Nuottitarkkuus: 0 %</p>
     <p class="small" id="rhythm-accuracy">Rytmitarkkuus: 0 %</p>
@@ -29,15 +31,18 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   </section>
 
   <script type="module">
-    import { loadProgress } from "../lib/progress.ts";
+    import { loadProgress, isDailyGoalMet } from "../lib/progress.ts";
     import { loadSettings } from "../lib/settings.ts";
     import { buildSummary } from "../lib/metrics.ts";
 
     const progress = loadProgress();
     const settings = loadSettings();
     const summary = buildSummary(progress);
+    const dailyDone = isDailyGoalMet(progress, settings.dailyGoalMin);
 
     document.getElementById("daily-goal").textContent = `Paivan tavoite: ${settings.dailyGoalMin} min`;
+    document.getElementById("daily-progress").textContent = `Tanaan harjoiteltu: ${progress.todayMinutes} min`;
+    document.getElementById("daily-done").textContent = dailyDone ? "Paiva valmis: Kyllä" : "Paiva valmis: Ei vielä";
     document.getElementById("streak").textContent = `Putki: ${progress.streak} paivaa`;
     document.getElementById("accuracy").textContent = `Nuottitarkkuus: ${summary.noteAccuracyPercent} % (${summary.totalNoteAnswers} vastausta)`;
     document.getElementById("rhythm-accuracy").textContent = `Rytmitarkkuus: ${summary.rhythmAccuracyPercent} % (${summary.totalRhythmAnswers} vastausta)`;

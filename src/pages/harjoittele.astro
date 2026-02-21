@@ -46,7 +46,7 @@ import rhythmDeck from "../content/decks/rhythm-values.json";
 
   <script type="module">
     import { playMetronome, playNote, setMasterGain } from "../lib/audio/synth.ts";
-    import { loadProgress, saveProgress, registerSession } from "../lib/progress.ts";
+    import { addPracticeMinutes, loadProgress, saveProgress, registerSession } from "../lib/progress.ts";
     import { loadSettings } from "../lib/settings.ts";
 
     const notes = JSON.parse('{JSON.stringify(noteDeck.notes)}');
@@ -107,6 +107,7 @@ import rhythmDeck from "../content/decks/rhythm-values.json";
         progress.stats.noteTotal += 1;
         if (ok) progress.stats.noteCorrect += 1;
         saveProgress(progress);
+        progress = addPracticeMinutes(0.35);
         feedbackEl.textContent = ok ? "Oikein!" : `Vaarin. Oikea oli ${current.name}.`;
         renderStats();
         window.setTimeout(nextRound, 700);
@@ -140,6 +141,7 @@ import rhythmDeck from "../content/decks/rhythm-values.json";
       progress.stats.rhythmTotal += 1;
       if (isCorrect) progress.stats.rhythmCorrect += 1;
       saveProgress(progress);
+      progress = addPracticeMinutes(0.75);
       renderStats();
 
       rhythmStatusEl.textContent = isCorrect
@@ -235,6 +237,7 @@ import rhythmDeck from "../content/decks/rhythm-values.json";
       progress.stats.rhythmTotal += 1;
       if (ok) progress.stats.rhythmCorrect += 1;
       saveProgress(progress);
+      progress = addPracticeMinutes(0.5);
       renderStats();
       rhythmDdStatusEl.textContent = ok
         ? `Oikein! Tahti tayttyi tarkasti (${total}/${rhythmDeck.targetBeats}).`
