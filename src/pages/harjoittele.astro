@@ -20,26 +20,54 @@ import noteDeck from "../content/decks/note-identification.json";
     <p class="small" id="stats"></p>
   </section>
 
+  <section class="card">
+    <h2>Rytmiharjoitus</h2>
+    <p>Napauta 4 tasaiselle iskulle metronomin mukana. Saat palautteen ajoituksen tarkkuudesta.</p>
+    <p class="small" id="rhythm-status">Valmis. Paina Aloita.</p>
+    <div class="grid">
+      <button class="btn" id="rhythm-start" type="button">Aloita rytmi</button>
+      <button class="btn ghost" id="rhythm-tap" type="button" disabled>NAPUTA</button>
+      <button class="btn ghost" id="rhythm-stop" type="button" disabled>Lopeta</button>
+    </div>
+  </section>
+
   <script type="module">
-    import { playNote } from "../lib/audio/synth.ts";
+    import { playMetronome, playNote, setMasterGain } from "../lib/audio/synth.ts";
     import { loadProgress, saveProgress, registerSession } from "../lib/progress.ts";
+    import { loadSettings } from "../lib/settings.ts";
 
     const notes = JSON.parse('{JSON.stringify(noteDeck.notes)}');
+    const settings = loadSettings();
+    setMasterGain(settings.masterGain);
 
     const targetEl = document.getElementById("target-note");
     const feedbackEl = document.getElementById("feedback");
     const choicesEl = document.getElementById("choices");
     const statsEl = document.getElementById("stats");
     const playBtn = document.getElementById("play-btn");
+    const rhythmStatusEl = document.getElementById("rhythm-status");
+    const rhythmStartBtn = document.getElementById("rhythm-start");
+    const rhythmTapBtn = document.getElementById("rhythm-tap");
+    const rhythmStopBtn = document.getElementById("rhythm-stop");
 
     let current = notes[Math.floor(Math.random() * notes.length)];
     let progress = registerSession();
+    let stopMetro = null;
+    let rhythmRunning = false;
+    let startAt = 0;
+    let expectedTimes = [];
+    let taps = [];
+    const beatCount = 4;
+    const timingWindowMs = 140;
 
     function renderStats() {
-      const ratio = progress.stats.noteTotal
+      const noteRatio = progress.stats.noteTotal
         ? Math.round((progress.stats.noteCorrect / progress.stats.noteTotal) * 100)
         : 0;
-      statsEl.textContent = `Oikein: ${progress.stats.noteCorrect}/${progress.stats.noteTotal} (${ratio} %) | Putki: ${progress.streak}`;
+      const rhythmRatio = progress.stats.rhythmTotal
+        ? Math.round((progress.stats.rhythmCorrect / progress.stats.rhythmTotal) * 100)
+        : 0;
+      statsEl.textContent = `Nuotit: ${progress.stats.noteCorrect}/${progress.stats.noteTotal} (${noteRatio} %) | Rytmi: ${progress.stats.rhythmCorrect}/${progress.stats.rhythmTotal} (${rhythmRatio} %) | Putki: ${progress.streak}`;
     }
 
     function nextRound() {
@@ -66,6 +94,66 @@ import noteDeck from "../content/decks/note-identification.json";
     });
 
     playBtn.addEventListener("click", () => playNote(current.midi));
+
+    function resetRhythmUi() {
+      rhythmTapBtn.disabled = true;
+      rhythmStopBtn.disabled = true;
+      rhythmStartBtn.disabled = false;
+      rhythmRunning = false;
+      if (stopMetro) stopMetro();
+      stopMetro = null;
+    }
+
+    function finishRhythm() {
+      if (!rhythmRunning) return;
+      const count = Math.min(taps.length, expectedTimes.length);
+      const offsets = [];
+      for (let i = 0; i < count; i += 1) {
+        offsets.push(Math.abs(taps[i] - expectedTimes[i]));
+      }
+      const average = offsets.length
+        ? Math.round(offsets.reduce((a, b) => a + b, 0) / offsets.length)
+        : 999;
+
+      const isCorrect = count === beatCount && offsets.every((v) => v <= timingWindowMs);
+      progress.stats.rhythmTotal += 1;
+      if (isCorrect) progress.stats.rhythmCorrect += 1;
+      saveProgress(progress);
+      renderStats();
+
+      rhythmStatusEl.textContent = isCorrect
+        ? `Hyva! Keskipoikkeama ${average} ms.`
+        : `Yrita uudelleen. Keskipoikkeama ${average} ms, tavoite <= ${timingWindowMs} ms.`;
+      resetRhythmUi();
+    }
+
+    rhythmStartBtn.addEventListener("click", () => {
+      const beatMs = 60000 / settings.metronomeBpm;
+      startAt = performance.now() + beatMs;
+      expectedTimes = Array.from({ length: beatCount }, (_, i) => startAt + i * beatMs);
+      taps = [];
+      rhythmRunning = true;
+      rhythmStatusEl.textContent = `Naputa ${beatCount} iskua (${settings.metronomeBpm} BPM).`;
+      rhythmTapBtn.disabled = false;
+      rhythmStopBtn.disabled = false;
+      rhythmStartBtn.disabled = true;
+      if (stopMetro) stopMetro();
+      stopMetro = playMetronome(settings.metronomeBpm, settings.defaultTimeSig);
+      window.setTimeout(() => {
+        if (rhythmRunning) finishRhythm();
+      }, beatMs * (beatCount + 1));
+    });
+
+    rhythmTapBtn.addEventListener("click", () => {
+      if (!rhythmRunning) return;
+      taps.push(performance.now());
+      if (taps.length >= beatCount) finishRhythm();
+    });
+
+    rhythmStopBtn.addEventListener("click", () => {
+      rhythmStatusEl.textContent = "Rytmiharjoitus keskeytetty.";
+      resetRhythmUi();
+    });
 
     nextRound();
     renderStats();

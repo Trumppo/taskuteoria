@@ -17,6 +17,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     <p class="small" id="daily-goal">Paivan tavoite: 8 min</p>
     <p class="small" id="streak">Putki: 0 paivaa</p>
     <p class="small" id="accuracy">Nuottitarkkuus: 0 %</p>
+    <p class="small" id="rhythm-accuracy">Rytmitarkkuus: 0 %</p>
     <p class="small" id="weakest">Heikoin osa-alue: Ei tarpeeksi dataa</p>
     <div class="grid">
       <a class="btn ghost" href="/harjoittele">Nuotit</a>
@@ -38,6 +39,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     document.getElementById("daily-goal").textContent = `Paivan tavoite: ${settings.dailyGoalMin} min`;
     document.getElementById("streak").textContent = `Putki: ${progress.streak} paivaa`;
     document.getElementById("accuracy").textContent = `Nuottitarkkuus: ${summary.noteAccuracyPercent} % (${summary.totalNoteAnswers} vastausta)`;
+    document.getElementById("rhythm-accuracy").textContent = `Rytmitarkkuus: ${summary.rhythmAccuracyPercent} % (${summary.totalRhythmAnswers} vastausta)`;
     document.getElementById("weakest").textContent = `Heikoin osa-alue: ${summary.weakestArea}`;
   </script>
 </BaseLayout>

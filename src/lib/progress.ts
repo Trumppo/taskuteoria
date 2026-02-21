@@ -5,6 +5,8 @@ export type ProgressData = {
   stats: {
     noteCorrect: number;
     noteTotal: number;
+    rhythmCorrect: number;
+    rhythmTotal: number;
   };
 };
 
@@ -14,7 +16,7 @@ const defaults: ProgressData = {
   streak: 0,
   lastPracticeDate: null,
   completedLessons: [],
-  stats: { noteCorrect: 0, noteTotal: 0 },
+  stats: { noteCorrect: 0, noteTotal: 0, rhythmCorrect: 0, rhythmTotal: 0 },
 };
 
 export function loadProgress(): ProgressData {
