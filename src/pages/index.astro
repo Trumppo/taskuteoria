@@ -11,6 +11,8 @@ const withBase = (path: string) => new URL(path, `https://taskuteoria.local${bas
     <p>Staattinen, mobiiliin optimoitu musiikinteorian harjoittelusovellus. Harjoittele 5-10 min paivassa.</p>
     <div class="grid">
       <a class="btn" href={withBase("harjoittele")}>Jatka harjoittelua</a>
+      <a class="btn ghost" href={withBase("valitsin")}>Harjoitusvalitsin</a>
+      <a class="btn ghost" href={withBase("pikavisa")}>Pikavisa</a>
       <a class="btn ghost" href={withBase("asetukset")}>Asetukset</a>
     </div>
   </section>
@@ -30,6 +32,7 @@ const withBase = (path: string) => new URL(path, `https://taskuteoria.local${bas
       <a class="btn ghost" href={withBase("kuuntele")}>Intervallit</a>
       <a class="btn ghost" href={withBase("kortit")}>Flashcards</a>
       <a class="btn ghost" href={withBase("polku")}>14 paivan polku</a>
+      <a class="btn ghost" href={withBase("valitsin")}>Kaikki harjoitukset</a>
     </div>
   </section>
 

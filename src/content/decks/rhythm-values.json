@@ -1,6 +1,9 @@
 {
-  "timeSignature": "4/4",
-  "targetBeats": 4,
+  "timeSignatures": [
+    { "id": "4/4", "label": "4/4", "targetBeats": 4 },
+    { "id": "3/4", "label": "3/4", "targetBeats": 3 },
+    { "id": "6/8", "label": "6/8", "targetBeats": 3 }
+  ],
   "pieces": [
     { "id": "whole", "label": "Kokonuotti", "beats": 4 },
     { "id": "half", "label": "Puolinuotti", "beats": 2 },
@@ -8,4 +11,3 @@
     { "id": "eighth", "label": "Kahdeksasosa", "beats": 0.5 }
   ]
 }
-

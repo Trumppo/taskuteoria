@@ -140,6 +140,21 @@ input[type="range"] {
   font-size: .86rem;
 }
 
+.staff-wrap {
+  width: 100%;
+  overflow: hidden;
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+  background: var(--bg-soft);
+  padding: .45rem;
+}
+
+.staff-svg {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+}
+
 @media (min-width: 900px) {
   main { padding-top: 1.3rem; }
 }

@@ -1,0 +1,29 @@
+{
+  "title": "Sävellajit: C-duuri ja a-molli",
+  "questions": [
+    {
+      "id": "key-cmaj-1",
+      "prompt": "Mitkä sävelet kuuluvat C-duuriin?",
+      "options": ["C D E F G A H", "C D Es F G A H", "C D E Fis G A H"],
+      "correctIndex": 0
+    },
+    {
+      "id": "key-amin-1",
+      "prompt": "Mikä on a-mollin rinnakkaissävellaji?",
+      "options": ["G-duuri", "C-duuri", "F-duuri"],
+      "correctIndex": 1
+    },
+    {
+      "id": "key-cmaj-2",
+      "prompt": "Kuinka monta etumerkkiä on C-duurissa?",
+      "options": ["0", "1", "2"],
+      "correctIndex": 0
+    },
+    {
+      "id": "key-amin-2",
+      "prompt": "Kuinka monta etumerkkiä on luonnollisessa a-mollissa?",
+      "options": ["0", "1", "2"],
+      "correctIndex": 0
+    }
+  ]
+}

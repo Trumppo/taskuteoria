@@ -1,0 +1,22 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+const rawBase = import.meta.env.BASE_URL;
+const base = rawBase.endsWith("/") ? rawBase : `${rawBase}/`;
+const withBase = (path: string) => new URL(path, `https://taskuteoria.local${base}`).pathname;
+---
+
+<BaseLayout title="Harjoitusvalitsin | TaskuTeoria" active="harjoittele">
+  <section class="card">
+    <h1>Harjoitusvalitsin</h1>
+    <p>Valitse nopea 5-8 minuutin harjoitus.</p>
+  </section>
+
+  <section class="card grid">
+    <a class="btn" href={withBase("harjoittele")}>Nuotit + rytmi + savellajit</a>
+    <a class="btn ghost" href={withBase("kuuntele")}>Intervallit ja soinnut</a>
+    <a class="btn ghost" href={withBase("kortit")}>Flashcards + SRS</a>
+    <a class="btn ghost" href={withBase("kirjasto")}>Mini-opetus</a>
+    <a class="btn ghost" href={withBase("pikavisa")}>Pikavisa (mix)</a>
+    <a class="btn ghost" href={withBase("polku")}>14 paivan polku</a>
+  </section>
+</BaseLayout>

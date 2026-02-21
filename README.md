@@ -3,13 +3,15 @@
 Staattinen, mobiilioptimoitu musiikinteorian harjoittelusovellus.
 
 ## Ominaisuudet
-- Nuottien tunnistus (välitön palaute)
+- Nuottien tunnistus viivastolta (diskantti + basso, välitön palaute)
 - Rytmiharjoitukset:
-  - tap-ajastus (metronomi + ms-tarkkuus)
-  - drag & drop -tahtitehtävä
+  - tap-ajastus (metronomi + ms-tarkkuus, 4/4 + 3/4 + 6/8)
+  - drag & drop -tahtitehtävä (tahtilajituki)
+- Sävellajit: C-duuri ja a-molli (pikakysymykset)
 - Flashcards + SRS
-- Kuuntelutehtävät (intervalli/sointu)
+- Kuuntelutehtävät (intervalli/sointu, melodinen/harmoninen intervallitila)
 - Mini-opetus + 3 pikakysymystä
+- Harjoitusvalitsin + Pikavisa (mix)
 - Päiväputki, päivätavoite, minuuttikertymä
 - Offline/PWA (service worker + fallback-sivu)
 

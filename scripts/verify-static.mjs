@@ -12,6 +12,8 @@ const requiredFiles = [
   "kuuntele/index.html",
   "kirjasto/index.html",
   "asetukset/index.html",
+  "valitsin/index.html",
+  "pikavisa/index.html",
 ];
 
 const missing = requiredFiles.filter((file) => !fs.existsSync(path.join(dist, file)));
@@ -38,4 +40,3 @@ if (!fs.existsSync(offlinePath)) {
 }
 
 console.log("verify-static: ok");
-

@@ -1,0 +1,157 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import noteDeck from "../content/decks/note-identification.json";
+import listeningDeck from "../content/decks/listening-quiz.json";
+import keyDeck from "../content/decks/key-signatures.json";
+import rhythmDeck from "../content/decks/rhythm-values.json";
+---
+
+<BaseLayout title="Pikavisa | TaskuTeoria" active="harjoittele">
+  <section class="card">
+    <h1>Pikavisa</h1>
+    <p>Viiden kysymyksen sekoitus nuoteista, rytmista, savellajeista ja kuuntelusta.</p>
+    <p class="small" id="quiz-progress">Kysymys 1/5</p>
+    <p class="small" id="quiz-score">Pisteet: 0</p>
+  </section>
+
+  <section class="card">
+    <h2 id="quiz-question">Ladataan...</h2>
+    <p class="small" id="quiz-type"></p>
+    <div class="grid" id="quiz-options"></div>
+    <p class="small" id="quiz-feedback">Valitse vastaus.</p>
+  </section>
+
+  <section class="card grid">
+    <button id="quiz-play" type="button" class="btn ghost">Soita tehtava</button>
+    <button id="quiz-next" type="button" class="btn">Seuraava</button>
+  </section>
+
+  <script type="module">
+    import { addPracticeMinutes, registerSession } from "../lib/progress.ts";
+    import { loadSettings } from "../lib/settings.ts";
+    import { playInterval, playChord, setMasterGain } from "../lib/audio/synth.ts";
+
+    const noteDeck = JSON.parse('{JSON.stringify(noteDeck)}');
+    const listeningDeck = JSON.parse('{JSON.stringify(listeningDeck)}');
+    const keyDeck = JSON.parse('{JSON.stringify(keyDeck)}');
+    const rhythmDeck = JSON.parse('{JSON.stringify(rhythmDeck)}');
+
+    const settings = loadSettings();
+    setMasterGain(settings.masterGain);
+    registerSession();
+
+    const types = ["note", "timesig", "key", "interval", "chord"];
+    const questions = [];
+    let index = 0;
+    let score = 0;
+    let answered = false;
+
+    const progressEl = document.getElementById("quiz-progress");
+    const scoreEl = document.getElementById("quiz-score");
+    const questionEl = document.getElementById("quiz-question");
+    const typeEl = document.getElementById("quiz-type");
+    const optionsEl = document.getElementById("quiz-options");
+    const feedbackEl = document.getElementById("quiz-feedback");
+    const playBtn = document.getElementById("quiz-play");
+    const nextBtn = document.getElementById("quiz-next");
+
+    function randomItem(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function buildQuestions() {
+      const note = randomItem(noteDeck.notes);
+      questions.push({
+        type: "note",
+        prompt: `Mika kirjainnimi vastaa nuottia ${note.label}?`,
+        options: ["C", "D", "E", "F", "G", "A", "H"],
+        correct: note.answer
+      });
+
+      const sig = randomItem(rhythmDeck.timeSignatures);
+      questions.push({
+        type: "timesig",
+        prompt: `Kuinka monta perusiskua harjoituksessa lasketaan tahtilajissa ${sig.label}?`,
+        options: ["2", "3", "4", "6"],
+        correct: String(sig.targetBeats === 3 && sig.label === "6/8" ? 3 : sig.targetBeats)
+      });
+
+      const keyQ = randomItem(keyDeck.questions);
+      questions.push({
+        type: "key",
+        prompt: keyQ.prompt,
+        options: keyQ.options,
+        correct: keyQ.options[keyQ.correctIndex]
+      });
+
+      const interval = randomItem(listeningDeck.intervals);
+      questions.push({
+        type: "interval",
+        prompt: "Tunnista intervalli (paina Soita tehtava)",
+        options: listeningDeck.intervals.map((i) => i.label).slice(0, 6),
+        correct: interval.label,
+        sound: () => playInterval(60, interval.semitones, false)
+      });
+      if (!questions[3].options.includes(interval.label)) {
+        questions[3].options[Math.floor(Math.random() * questions[3].options.length)] = interval.label;
+      }
+
+      const chord = randomItem(listeningDeck.chords);
+      questions.push({
+        type: "chord",
+        prompt: "Tunnista sointu (paina Soita tehtava)",
+        options: listeningDeck.chords.map((c) => c.label),
+        correct: chord.label,
+        sound: () => playChord(60, chord.quality)
+      });
+    }
+
+    function render() {
+      const q = questions[index];
+      progressEl.textContent = `Kysymys ${index + 1}/5`;
+      scoreEl.textContent = `Pisteet: ${score}`;
+      questionEl.textContent = q.prompt;
+      typeEl.textContent = `Tyyppi: ${q.type}`;
+      feedbackEl.textContent = "Valitse vastaus.";
+      optionsEl.innerHTML = "";
+      answered = false;
+
+      q.options.forEach((opt) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "btn ghost";
+        btn.textContent = opt;
+        btn.addEventListener("click", () => {
+          if (answered) return;
+          answered = true;
+          const ok = opt === q.correct;
+          if (ok) score += 1;
+          feedbackEl.textContent = ok ? "Oikein!" : `Vaarin. Oikea vastaus: ${q.correct}`;
+          addPracticeMinutes(0.25);
+        });
+        optionsEl.appendChild(btn);
+      });
+
+      playBtn.disabled = typeof q.sound !== "function";
+    }
+
+    playBtn.addEventListener("click", () => {
+      const q = questions[index];
+      if (q.sound) q.sound();
+    });
+
+    nextBtn.addEventListener("click", () => {
+      if (index < questions.length - 1) {
+        index += 1;
+        render();
+        return;
+      }
+      feedbackEl.textContent = `Valmis! Lopputulos ${score}/${questions.length}.`;
+      progressEl.textContent = "Pikavisa valmis";
+      nextBtn.disabled = true;
+    });
+
+    buildQuestions();
+    render();
+  </script>
+</BaseLayout>

@@ -12,9 +12,11 @@ import quiz from "../content/decks/listening-quiz.json";
   <section class="card">
     <h2 id="prompt">Kuuntele tehtava</h2>
     <p class="small" id="feedback">Paina "Soita tehtava".</p>
+    <p class="small" id="interval-mode">Intervallitila: Melodinen</p>
     <div class="grid">
       <button class="btn" id="play-task" type="button">Soita tehtava</button>
       <button class="btn ghost" id="new-task" type="button">Uusi tehtava</button>
+      <button class="btn ghost" id="toggle-interval" type="button">Vaihda intervallitila</button>
     </div>
   </section>
 
@@ -35,6 +37,7 @@ import quiz from "../content/decks/listening-quiz.json";
     import { addPracticeMinutes, loadProgress, registerSession, saveProgress } from "../lib/progress.ts";
 
     let stopMetro = null;
+    let intervalMode = "melodic";
     const settings = loadSettings();
     setMasterGain(settings.masterGain);
     let progress = registerSession();
@@ -43,10 +46,12 @@ import quiz from "../content/decks/listening-quiz.json";
     const chords = JSON.parse('{JSON.stringify(quiz.chords)}');
     const promptEl = document.getElementById("prompt");
     const feedbackEl = document.getElementById("feedback");
+    const modeEl = document.getElementById("interval-mode");
     const statsEl = document.getElementById("stats");
     const choicesEl = document.getElementById("choices");
     const playTaskBtn = document.getElementById("play-task");
     const newTaskBtn = document.getElementById("new-task");
+    const toggleIntervalBtn = document.getElementById("toggle-interval");
 
     let currentTask = null;
 
@@ -55,12 +60,13 @@ import quiz from "../content/decks/listening-quiz.json";
         ? Math.round((progress.stats.listeningCorrect / progress.stats.listeningTotal) * 100)
         : 0;
       statsEl.textContent = `Kuuntelu: ${progress.stats.listeningCorrect}/${progress.stats.listeningTotal} (${ratio} %)`;
+      modeEl.textContent = `Intervallitila: ${intervalMode === "melodic" ? "Melodinen" : "Harmoninen"}`;
     }
 
     function playCurrentTask() {
       if (!currentTask) return;
       if (currentTask.kind === "interval") {
-        playInterval(60, currentTask.value.semitones, false);
+        playInterval(60, currentTask.value.semitones, intervalMode === "harmonic");
       } else {
         playChord(60, currentTask.value.quality);
       }
@@ -116,6 +122,11 @@ import quiz from "../content/decks/listening-quiz.json";
 
     playTaskBtn.addEventListener("click", () => playCurrentTask());
     newTaskBtn.addEventListener("click", () => nextTask());
+
+    toggleIntervalBtn.addEventListener("click", () => {
+      intervalMode = intervalMode === "melodic" ? "harmonic" : "melodic";
+      renderStats();
+    });
 
     document.getElementById("metro").addEventListener("click", () => {
       if (stopMetro) stopMetro();

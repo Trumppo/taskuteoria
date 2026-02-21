@@ -1,13 +1,20 @@
 {
   "intervals": [
-    { "id": "int-2", "label": "Sekunti", "semitones": 2 },
-    { "id": "int-4", "label": "Terssi", "semitones": 4 },
-    { "id": "int-5", "label": "Kvartti", "semitones": 5 },
-    { "id": "int-7", "label": "Kvintti", "semitones": 7 }
+    { "id": "int-2m", "label": "Pieni sekunti", "semitones": 1 },
+    { "id": "int-2", "label": "Suuri sekunti", "semitones": 2 },
+    { "id": "int-3m", "label": "Pieni terssi", "semitones": 3 },
+    { "id": "int-3", "label": "Suuri terssi", "semitones": 4 },
+    { "id": "int-4", "label": "Kvartti", "semitones": 5 },
+    { "id": "int-tri", "label": "Tritonus", "semitones": 6 },
+    { "id": "int-5", "label": "Kvintti", "semitones": 7 },
+    { "id": "int-6m", "label": "Pieni seksti", "semitones": 8 },
+    { "id": "int-6", "label": "Suuri seksti", "semitones": 9 },
+    { "id": "int-7m", "label": "Pieni septimi", "semitones": 10 },
+    { "id": "int-7", "label": "Suuri septimi", "semitones": 11 },
+    { "id": "int-8", "label": "Oktaavi", "semitones": 12 }
   ],
   "chords": [
     { "id": "ch-major", "label": "Duuri", "quality": "major" },
     { "id": "ch-minor", "label": "Molli", "quality": "minor" }
   ]
 }
-
