@@ -1,0 +1,86 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Asetukset | TaskuTeoria">
+  <section class="card">
+    <h1>Asetukset</h1>
+    <p>Muokkaa paivatavoitetta, metronomia ja aanenvoimakkuutta. Kaikki tallennetaan laitteellesi.</p>
+  </section>
+
+  <section class="card">
+    <label for="goal">Paivan tavoite (min)</label>
+    <input id="goal" type="range" min="3" max="20" step="1" />
+    <p class="small" id="goal-value"></p>
+
+    <label for="bpm">Metronomi BPM</label>
+    <input id="bpm" type="range" min="40" max="220" step="1" />
+    <p class="small" id="bpm-value"></p>
+
+    <label for="gain">Master gain</label>
+    <input id="gain" type="range" min="1" max="80" step="1" />
+    <p class="small" id="gain-value"></p>
+  </section>
+
+  <section class="card grid">
+    <button id="save" class="btn" type="button">Tallenna</button>
+    <button id="reset-settings" class="btn ghost" type="button">Palauta oletukset</button>
+  </section>
+
+  <script type="module">
+    import { loadSettings, saveSettings, resetSettings } from "../lib/settings.ts";
+    import { setMasterGain, playNote } from "../lib/audio/synth.ts";
+
+    const goalEl = document.getElementById("goal");
+    const bpmEl = document.getElementById("bpm");
+    const gainEl = document.getElementById("gain");
+    const goalVal = document.getElementById("goal-value");
+    const bpmVal = document.getElementById("bpm-value");
+    const gainVal = document.getElementById("gain-value");
+    const saveBtn = document.getElementById("save");
+    const resetBtn = document.getElementById("reset-settings");
+
+    function render(current) {
+      goalEl.value = String(current.dailyGoalMin);
+      bpmEl.value = String(current.metronomeBpm);
+      gainEl.value = String(Math.round(current.masterGain * 100));
+      goalVal.textContent = `${current.dailyGoalMin} min`;
+      bpmVal.textContent = `${current.metronomeBpm} BPM`;
+      gainVal.textContent = `${Math.round(current.masterGain * 100)} %`;
+      setMasterGain(current.masterGain);
+    }
+
+    function draftFromInputs() {
+      return {
+        dailyGoalMin: Number(goalEl.value),
+        metronomeBpm: Number(bpmEl.value),
+        masterGain: Number(gainEl.value) / 100,
+      };
+    }
+
+    [goalEl, bpmEl, gainEl].forEach((el) => {
+      el.addEventListener("input", () => {
+        const draft = draftFromInputs();
+        goalVal.textContent = `${draft.dailyGoalMin} min`;
+        bpmVal.textContent = `${draft.metronomeBpm} BPM`;
+        gainVal.textContent = `${Math.round(draft.masterGain * 100)} %`;
+        setMasterGain(draft.masterGain);
+      });
+    });
+
+    saveBtn.addEventListener("click", () => {
+      const next = saveSettings(draftFromInputs());
+      render(next);
+      playNote(72, 0.2);
+    });
+
+    resetBtn.addEventListener("click", () => {
+      const next = resetSettings();
+      render(next);
+      playNote(67, 0.2);
+    });
+
+    render(loadSettings());
+  </script>
+</BaseLayout>
+

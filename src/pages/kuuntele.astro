@@ -18,9 +18,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   </section>
 
   <script type="module">
-    import { playInterval, playChord, playMetronome } from "../lib/audio/synth.ts";
+    import { playInterval, playChord, playMetronome, setMasterGain } from "../lib/audio/synth.ts";
+    import { loadSettings } from "../lib/settings.ts";
 
     let stopMetro = null;
+    const settings = loadSettings();
+    setMasterGain(settings.masterGain);
 
     document.getElementById("i2").addEventListener("click", () => playInterval(60, 2, false));
     document.getElementById("i5").addEventListener("click", () => playInterval(60, 7, false));
@@ -29,7 +32,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
     document.getElementById("metro").addEventListener("click", () => {
       if (stopMetro) stopMetro();
-      stopMetro = playMetronome(90, "4/4");
+      stopMetro = playMetronome(settings.metronomeBpm, settings.defaultTimeSig);
     });
 
     document.getElementById("stop").addEventListener("click", () => {

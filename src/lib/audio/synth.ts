@@ -11,6 +11,12 @@ function ensureContext(): AudioContext {
   return ctx;
 }
 
+export function setMasterGain(value: number): void {
+  ensureContext();
+  if (!master) return;
+  master.gain.value = Math.min(0.8, Math.max(0.01, value));
+}
+
 function midiToFreq(midi: number): number {
   return 440 * Math.pow(2, (midi - 69) / 12);
 }

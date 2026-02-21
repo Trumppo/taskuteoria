@@ -6,11 +6,18 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   <section class="card">
     <h1>TaskuTeoria</h1>
     <p>Staattinen, mobiiliin optimoitu musiikinteorian harjoittelusovellus. Harjoittele 5-10 min paivassa.</p>
-    <a class="btn" href="/harjoittele">Jatka harjoittelua</a>
+    <div class="grid">
+      <a class="btn" href="/harjoittele">Jatka harjoittelua</a>
+      <a class="btn ghost" href="/asetukset">Asetukset</a>
+    </div>
   </section>
 
   <section class="card">
     <h2>Taman paivan fokus</h2>
+    <p class="small" id="daily-goal">Paivan tavoite: 8 min</p>
+    <p class="small" id="streak">Putki: 0 paivaa</p>
+    <p class="small" id="accuracy">Nuottitarkkuus: 0 %</p>
+    <p class="small" id="weakest">Heikoin osa-alue: Ei tarpeeksi dataa</p>
     <div class="grid">
       <a class="btn ghost" href="/harjoittele">Nuotit</a>
       <a class="btn ghost" href="/kuuntele">Intervallit</a>
@@ -18,4 +25,19 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       <a class="btn ghost" href="/polku">14 paivan polku</a>
     </div>
   </section>
+
+  <script type="module">
+    import { loadProgress } from "../lib/progress.ts";
+    import { loadSettings } from "../lib/settings.ts";
+    import { buildSummary } from "../lib/metrics.ts";
+
+    const progress = loadProgress();
+    const settings = loadSettings();
+    const summary = buildSummary(progress);
+
+    document.getElementById("daily-goal").textContent = `Paivan tavoite: ${settings.dailyGoalMin} min`;
+    document.getElementById("streak").textContent = `Putki: ${progress.streak} paivaa`;
+    document.getElementById("accuracy").textContent = `Nuottitarkkuus: ${summary.noteAccuracyPercent} % (${summary.totalNoteAnswers} vastausta)`;
+    document.getElementById("weakest").textContent = `Heikoin osa-alue: ${summary.weakestArea}`;
+  </script>
 </BaseLayout>
