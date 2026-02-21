@@ -1,0 +1,17 @@
+[
+  {
+    "id": "lib-cadence",
+    "title": "Kadenssit",
+    "body": "Kadenssi on sointukulku, joka luo jannitteen ja purun (esim. II–V–I)."
+  },
+  {
+    "id": "lib-modes",
+    "title": "Moodit",
+    "body": "Moodit ovat duuri- tai molliasteikon erilaisia aloituskohtia." 
+  },
+  {
+    "id": "lib-inversions",
+    "title": "Sointukäännökset",
+    "body": "Käännöksissä perusääni ei ole alimpana, jolloin sointu soi eri värillä."
+  }
+]

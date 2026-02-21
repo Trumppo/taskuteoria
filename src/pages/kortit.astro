@@ -1,29 +1,50 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import LevelNotice from "../components/LevelNotice.astro";
-import deck from "../content/decks/flashcards.json";
 ---
 
 <BaseLayout title="Kortit | TaskuTeoria" active="kortit" showNav={false}>
-  <section class="card">
+  <section class="card" data-level-section>
     <h1>Flashcards</h1>
     <p>Tiesin / En tiennyt -malli. Toistovaly tallennetaan localStorageen.</p>
     <p class="small" id="status" aria-live="polite"></p>
-    <h2 id="front">{deck[0].front}</h2>
-    <p id="back" class="small" hidden>{deck[0].back}</p>
+    <h2 id="front">Ladataan...</h2>
+    <p id="back" class="small" hidden></p>
   </section>
 
   <LevelNotice />
-  <section class="card grid">
+  <section class="card grid" data-level-section>
     <button id="show" type="button" class="btn ghost">Nayta vastaus</button>
     <button id="knew" type="button" class="btn">Tiesin</button>
     <button id="didnt" type="button" class="btn ghost">En tiennyt</button>
   </section>
 
   <script>
+    import { getLevel } from "../lib/level";
     import initKortit from "../lib/pages/kortit";
-    import deck from "../content/decks/flashcards.json";
+    import cardsBeginner from "../content/decks/flashcards-beginner.json";
+    import cardsIntermediate from "../content/decks/flashcards-intermediate.json";
+    import cardsExpert from "../content/decks/flashcards-expert.json";
 
-    initKortit(deck);
+    const decks = {
+      beginner: cardsBeginner,
+      intermediate: cardsIntermediate,
+      expert: cardsExpert,
+    };
+
+    const level = getLevel();
+    const deck = decks[level];
+    const empty = !deck || deck.length === 0;
+    const emptyEl = document.getElementById("level-empty");
+    const sections = document.querySelectorAll("[data-level-section]");
+
+    if (empty) {
+      if (emptyEl) emptyEl.hidden = false;
+      sections.forEach((section) => {
+        if (section instanceof HTMLElement) section.hidden = true;
+      });
+    } else {
+      initKortit(deck);
+    }
   </script>
 </BaseLayout>

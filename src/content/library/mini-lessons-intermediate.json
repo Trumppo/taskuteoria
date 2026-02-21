@@ -1,0 +1,46 @@
+[
+  {
+    "id": "mini-intervals",
+    "title": "Intervallit nopeasti",
+    "summary": "Tunnista sekunti, terssi ja kvintti korvakuulolta.",
+    "questions": [
+      {
+        "prompt": "Kuinka monta puolisavelaskelta on suuri terssi?",
+        "options": ["3", "4", "5"],
+        "correctIndex": 1
+      },
+      {
+        "prompt": "Mika on kvintin etaisyys?",
+        "options": ["6", "7", "8"],
+        "correctIndex": 1
+      },
+      {
+        "prompt": "Mika on pieni sekunti?",
+        "options": ["1", "2", "3"],
+        "correctIndex": 0
+      }
+    ]
+  },
+  {
+    "id": "mini-key-signatures",
+    "title": "Etumerkit nopeasti",
+    "summary": "Muista yleiset ylennykset ja alennukset.",
+    "questions": [
+      {
+        "prompt": "Kuinka monta ylennysta on D-duurissa?",
+        "options": ["1", "2", "3"],
+        "correctIndex": 1
+      },
+      {
+        "prompt": "Kuinka monta alennusta on B-duurissa?",
+        "options": ["1", "2", "3"],
+        "correctIndex": 1
+      },
+      {
+        "prompt": "Mika on e-mollin rinnakkaissavellaji?",
+        "options": ["G-duuri", "D-duuri", "C-duuri"],
+        "correctIndex": 0
+      }
+    ]
+  }
+]

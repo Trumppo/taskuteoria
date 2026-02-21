@@ -1,0 +1,8 @@
+[
+  { "id": "b1", "front": "Mita C-duuriin kuuluu?", "back": "Savellysteet C-E-G." },
+  { "id": "b2", "front": "Mita tarkoittaa 4/4?", "back": "Tahdissa on nelja neljasosaiskua." },
+  { "id": "b3", "front": "Mika on pieni terssi?", "back": "Kolmen puolisavelaskeleen etaisyys." },
+  { "id": "b4", "front": "Mika on kvintti?", "back": "Seitseman puolisavelaskeleen etaisyys." },
+  { "id": "b5", "front": "Mita tarkoittaa 3/4?", "back": "Tahdissa on kolme neljasosaiskua." },
+  { "id": "b6", "front": "Mika on mollisointu?", "back": "Perusaani + pieni terssi + kvintti." }
+]

@@ -1,0 +1,14 @@
+{
+  "timeSignatures": [
+    { "id": "4/4", "label": "4/4", "targetBeats": 4 },
+    { "id": "6/8", "label": "6/8", "targetBeats": 3 }
+  ],
+  "pieces": [
+    { "id": "half", "label": "Puolinuotti", "beats": 2 },
+    { "id": "quarter", "label": "Neljäsosa", "beats": 1 },
+    { "id": "eighth", "label": "Kahdeksasosa", "beats": 0.5 },
+    { "id": "sixteenth", "label": "Kuudestoistaosa", "beats": 0.25 },
+    { "id": "dotted-eighth", "label": "Pisteellinen kahdeksasosa", "beats": 0.75 },
+    { "id": "dotted-quarter", "label": "Pisteellinen neljäsosa", "beats": 1.5 }
+  ]
+}

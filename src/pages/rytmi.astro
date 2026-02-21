@@ -4,7 +4,7 @@ import LevelNotice from "../components/LevelNotice.astro";
 ---
 
 <BaseLayout title="Rytmi | TaskuTeoria" active="harjoittele" showNav={false}>
-  <section class="card">
+  <section class="card" data-level-section>
     <h1>Rytmi</h1>
     <p>Naputa metronomin mukana ja rakenna tahtia. Yksi osio kerrallaan, selkea fokus.</p>
     <p class="small" id="stats"></p>
@@ -12,7 +12,7 @@ import LevelNotice from "../components/LevelNotice.astro";
 
   <LevelNotice />
 
-  <section class="card">
+  <section class="card" data-level-section>
     <h2>Tap-harjoitus</h2>
     <p>Napauta tahtiin metronomin mukana. Harjoitus arpoo tahtilajin 4/4, 3/4 tai 6/8.</p>
     <p class="small" id="rhythm-sig">Tahtilaji: -</p>
@@ -25,7 +25,7 @@ import LevelNotice from "../components/LevelNotice.astro";
     </div>
   </section>
 
-  <section class="card">
+  <section class="card" data-level-section>
     <h2>Tahti drag & drop</h2>
     <p>Rakenna tahti niin, etta kokonaiskesto vastaa valittua tahtilajia.</p>
     <div class="grid" id="rhythm-palette"></div>
@@ -40,12 +40,32 @@ import LevelNotice from "../components/LevelNotice.astro";
   </section>
 
   <script>
+    import { getLevel } from "../lib/level";
     import initRytmi, { type RytmiData } from "../lib/pages/rytmi";
-    import rhythmDeck from "../content/decks/rhythm-values.json";
+    import rhythmBeginner from "../content/decks/rhythm-beginner.json";
+    import rhythmIntermediate from "../content/decks/rhythm-intermediate.json";
+    import rhythmExpert from "../content/decks/rhythm-expert.json";
 
-    const data: RytmiData = {
-      rhythmDeck: rhythmDeck as RytmiData["rhythmDeck"],
+    const decks = {
+      beginner: rhythmBeginner,
+      intermediate: rhythmIntermediate,
+      expert: rhythmExpert,
     };
-    initRytmi(data);
+
+    const level = getLevel();
+    const deck = decks[level];
+    const empty = !deck || deck.pieces.length === 0 || deck.timeSignatures.length === 0;
+    const emptyEl = document.getElementById("level-empty");
+    const sections = document.querySelectorAll("[data-level-section]");
+
+    if (empty) {
+      if (emptyEl) emptyEl.hidden = false;
+      sections.forEach((section) => {
+        if (section instanceof HTMLElement) section.hidden = true;
+      });
+    } else {
+      const data: RytmiData = { rhythmDeck: deck as RytmiData["rhythmDeck"] };
+      initRytmi(data);
+    }
   </script>
 </BaseLayout>

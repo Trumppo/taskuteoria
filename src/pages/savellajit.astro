@@ -1,19 +1,18 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import LevelNotice from "../components/LevelNotice.astro";
-import keyDeck from "../content/decks/key-signatures.json";
 ---
 
 <BaseLayout title="Savellajit | TaskuTeoria" active="harjoittele" showNav={false}>
-  <section class="card">
-    <h1>{keyDeck.title}</h1>
+  <section class="card" data-level-section>
+    <h1>Sävellajit</h1>
     <p>Nopeat kysymykset savellajeista. Yksi kysymys kerrallaan.</p>
     <p class="small" id="stats"></p>
   </section>
 
   <LevelNotice />
 
-  <section class="card">
+  <section class="card" data-level-section>
     <p id="key-question"></p>
     <div class="grid" id="key-options"></div>
     <p class="small" id="key-feedback" aria-live="polite">Valitse vastaus.</p>
@@ -21,12 +20,32 @@ import keyDeck from "../content/decks/key-signatures.json";
   </section>
 
   <script>
+    import { getLevel } from "../lib/level";
     import initSavellajit, { type SavellajitData } from "../lib/pages/savellajit";
-    import keyDeck from "../content/decks/key-signatures.json";
+    import keyBeginner from "../content/decks/key-signatures-beginner.json";
+    import keyIntermediate from "../content/decks/key-signatures-intermediate.json";
+    import keyExpert from "../content/decks/key-signatures-expert.json";
 
-    const data: SavellajitData = {
-      keyDeck: keyDeck as SavellajitData["keyDeck"],
+    const decks = {
+      beginner: keyBeginner,
+      intermediate: keyIntermediate,
+      expert: keyExpert,
     };
-    initSavellajit(data);
+
+    const level = getLevel();
+    const deck = decks[level];
+    const empty = !deck || deck.questions.length === 0;
+    const emptyEl = document.getElementById("level-empty");
+    const sections = document.querySelectorAll("[data-level-section]");
+
+    if (empty) {
+      if (emptyEl) emptyEl.hidden = false;
+      sections.forEach((section) => {
+        if (section instanceof HTMLElement) section.hidden = true;
+      });
+    } else {
+      const data: SavellajitData = { keyDeck: deck as SavellajitData["keyDeck"] };
+      initSavellajit(data);
+    }
   </script>
 </BaseLayout>

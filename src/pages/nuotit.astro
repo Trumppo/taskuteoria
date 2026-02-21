@@ -4,7 +4,7 @@ import LevelNotice from "../components/LevelNotice.astro";
 ---
 
 <BaseLayout title="Nuotit | TaskuTeoria" active="harjoittele" showNav={false}>
-  <section class="card">
+  <section class="card" data-level-section>
     <h1>Nuotit</h1>
     <p>Perusalue + laajennetut viivaston apuviivat. Vastaus annetaan heti ja harjoitus toimii seka diskantilla etta bassolla.</p>
     <p class="small" id="clef-label">Klaavi: -</p>
@@ -14,11 +14,11 @@ import LevelNotice from "../components/LevelNotice.astro";
 
   <LevelNotice />
 
-  <section class="card">
+  <section class="card" data-level-section>
     <div class="grid" id="choices"></div>
   </section>
 
-  <section class="card">
+  <section class="card" data-level-section>
     <button class="btn ghost" id="play-btn" type="button">Soita nuotti</button>
     <p class="small" id="stats"></p>
   </section>
@@ -27,9 +27,10 @@ import LevelNotice from "../components/LevelNotice.astro";
     import initNuotit, { type NuotitData } from "../lib/pages/nuotit";
     import notesBasic from "../content/decks/notes-basic.json";
     import notesExtended from "../content/decks/notes-extended.json";
+    import notesExpert from "../content/decks/notes-expert.json";
 
     const data: NuotitData = {
-      notes: [...notesBasic.notes, ...notesExtended.notes] as NuotitData["notes"],
+      notes: [...notesBasic.notes, ...notesExtended.notes, ...notesExpert.notes] as NuotitData["notes"],
     };
     initNuotit(data);
   </script>

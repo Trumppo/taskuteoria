@@ -44,9 +44,13 @@ export default function initNuotit(data: NuotitData): void {
   const noteOptions = [...new Set(pool.map((note) => note.answer))];
   const selectionOptions = { cooldown: 3, minSamples: 5, recencyDays: 7 };
   const emptyEl = document.getElementById("level-empty");
+  const sections = document.querySelectorAll("[data-level-section]");
 
   if (pool.length === 0) {
     if (emptyEl) emptyEl.hidden = false;
+    sections.forEach((section) => {
+      if (section instanceof HTMLElement) section.hidden = true;
+    });
     targetEl.textContent = "Ei sisaltoa talle tasolle viela.";
     playBtn.disabled = true;
     choicesEl.innerHTML = "";

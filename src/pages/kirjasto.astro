@@ -1,7 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import LevelNotice from "../components/LevelNotice.astro";
-import cards from "../content/library/cards.json";
 ---
 
 <BaseLayout title="Kirjasto | TaskuTeoria" active="kirjasto" showNav={false}>
@@ -11,14 +10,9 @@ import cards from "../content/library/cards.json";
   </section>
 
   <LevelNotice />
-  {cards.map((card) => (
-    <section class="card">
-      <h2>{card.title}</h2>
-      <p>{card.body}</p>
-    </section>
-  ))}
+  <div id="library-cards" data-level-section></div>
 
-  <section class="card">
+  <section class="card" data-level-section>
     <h2>Mini-opetus + 3 harjoitusta</h2>
     <p class="small" id="mini-meta">Lyhyt kertaus ja nopeat kysymykset.</p>
     <h3 id="mini-title"></h3>
@@ -26,21 +20,66 @@ import cards from "../content/library/cards.json";
     <p class="small" id="mini-progress" aria-live="polite"></p>
   </section>
 
-  <section class="card">
+  <section class="card" data-level-section>
     <p id="mini-question"></p>
     <div class="grid" id="mini-options"></div>
     <p class="small" id="mini-feedback" aria-live="polite"></p>
   </section>
 
-  <section class="card grid">
+  <section class="card grid" data-level-section>
     <button class="btn ghost" id="mini-next-question" type="button">Seuraava kysymys</button>
     <button class="btn" id="mini-next-lesson" type="button">Seuraava mini-opetus</button>
   </section>
 
   <script>
+    import { getLevel } from "../lib/level";
     import initKirjasto from "../lib/pages/kirjasto";
-    import miniLessons from "../content/library/mini-lessons.json";
+    import cardsBeginner from "../content/library/cards-beginner.json";
+    import cardsIntermediate from "../content/library/cards-intermediate.json";
+    import cardsExpert from "../content/library/cards-expert.json";
+    import lessonsBeginner from "../content/library/mini-lessons-beginner.json";
+    import lessonsIntermediate from "../content/library/mini-lessons-intermediate.json";
+    import lessonsExpert from "../content/library/mini-lessons-expert.json";
 
-    initKirjasto(miniLessons);
+    const level = getLevel();
+    const cardsByLevel = {
+      beginner: cardsBeginner,
+      intermediate: cardsIntermediate,
+      expert: cardsExpert,
+    };
+    const lessonsByLevel = {
+      beginner: lessonsBeginner,
+      intermediate: lessonsIntermediate,
+      expert: lessonsExpert,
+    };
+
+    const cards = cardsByLevel[level];
+    const lessons = lessonsByLevel[level];
+    const empty = !cards || cards.length === 0 || !lessons || lessons.length === 0;
+    const emptyEl = document.getElementById("level-empty");
+    const sections = document.querySelectorAll("[data-level-section]");
+
+    if (empty) {
+      if (emptyEl) emptyEl.hidden = false;
+      sections.forEach((section) => {
+        if (section instanceof HTMLElement) section.hidden = true;
+      });
+    } else {
+      const container = document.getElementById("library-cards");
+      if (container) {
+        cards.forEach((card) => {
+          const section = document.createElement("section");
+          section.className = "card";
+          const title = document.createElement("h2");
+          title.textContent = card.title;
+          const body = document.createElement("p");
+          body.textContent = card.body;
+          section.appendChild(title);
+          section.appendChild(body);
+          container.appendChild(section);
+        });
+      }
+      initKirjasto(lessons);
+    }
   </script>
 </BaseLayout>

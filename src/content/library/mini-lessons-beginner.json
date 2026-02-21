@@ -1,0 +1,46 @@
+[
+  {
+    "id": "mini-note-values",
+    "title": "Nuottiarvot nopeasti",
+    "summary": "Kokonuotti = 4 iskua, puolinuotti = 2, neljasosanuotti = 1.",
+    "questions": [
+      {
+        "prompt": "Kuinka monta iskua kokonuotti kestaa?",
+        "options": ["1", "2", "4"],
+        "correctIndex": 2
+      },
+      {
+        "prompt": "Mika vastaa kahta iskua?",
+        "options": ["Puolinuotti", "Neljasosanuotti", "Tauko"],
+        "correctIndex": 0
+      },
+      {
+        "prompt": "Mika kestaa yhden iskun?",
+        "options": ["Kokonuotti", "Puolinuotti", "Neljasosanuotti"],
+        "correctIndex": 2
+      }
+    ]
+  },
+  {
+    "id": "mini-time-signatures",
+    "title": "Tahtilajit nopeasti",
+    "summary": "4/4 = nelja iskua, 3/4 = valssimainen, 6/8 = keinuvampi tuntuma.",
+    "questions": [
+      {
+        "prompt": "Mika on yleisin perustahti?",
+        "options": ["3/4", "4/4", "6/8"],
+        "correctIndex": 1
+      },
+      {
+        "prompt": "Mika tuntuu valssimaiselta?",
+        "options": ["3/4", "4/4", "2/2"],
+        "correctIndex": 0
+      },
+      {
+        "prompt": "Mika voidaan laskea usein kahteen?",
+        "options": ["6/8", "3/4", "4/4"],
+        "correctIndex": 0
+      }
+    ]
+  }
+]

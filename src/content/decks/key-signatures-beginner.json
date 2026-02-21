@@ -1,0 +1,41 @@
+{
+  "title": "Sävellajit (aloittelija)",
+  "questions": [
+    {
+      "id": "key-cmaj-count",
+      "prompt": "Kuinka monta etumerkkiä on C-duurissa?",
+      "options": ["0", "1", "2"],
+      "correctIndex": 0
+    },
+    {
+      "id": "key-amin-relative",
+      "prompt": "Mikä on a-mollin rinnakkaissävellaji?",
+      "options": ["C-duuri", "G-duuri", "F-duuri"],
+      "correctIndex": 0
+    },
+    {
+      "id": "key-gmaj-count",
+      "prompt": "Kuinka monta ylennystä on G-duurissa?",
+      "options": ["0", "1", "2"],
+      "correctIndex": 1
+    },
+    {
+      "id": "key-fmaj-count",
+      "prompt": "Kuinka monta alennusta on F-duurissa?",
+      "options": ["0", "1", "2"],
+      "correctIndex": 1
+    },
+    {
+      "id": "key-emin-relative",
+      "prompt": "Mikä on e-mollin rinnakkaissävellaji?",
+      "options": ["G-duuri", "C-duuri", "D-duuri"],
+      "correctIndex": 0
+    },
+    {
+      "id": "key-cmaj-notes",
+      "prompt": "Mitkä sävelet kuuluvat C-duuriin?",
+      "options": ["C D E F G A H", "C D Es F G A H", "C D E Fis G A H"],
+      "correctIndex": 0
+    }
+  ]
+}

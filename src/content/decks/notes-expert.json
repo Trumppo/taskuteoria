@@ -1,0 +1,19 @@
+{
+  "id": "notes-expert-fi",
+  "title": "Nuotit (asiantuntija)",
+  "description": "Hyvin laaja alue ja apuviivat molemmille klaaveille.",
+  "notes": [
+    { "id": "tr-e3", "label": "E3", "answer": "E", "midi": 52, "clef": "treble", "staffPos": -7, "level": "expert", "difficulty": "hard", "tags": ["treble", "expert"], "weight": 1 },
+    { "id": "tr-d3", "label": "D3", "answer": "D", "midi": 50, "clef": "treble", "staffPos": -8, "level": "expert", "difficulty": "hard", "tags": ["treble", "expert"], "weight": 1 },
+    { "id": "tr-c3", "label": "C3", "answer": "C", "midi": 48, "clef": "treble", "staffPos": -9, "level": "expert", "difficulty": "hard", "tags": ["treble", "expert"], "weight": 1 },
+    { "id": "tr-g5", "label": "G5", "answer": "G", "midi": 79, "clef": "treble", "staffPos": 9, "level": "expert", "difficulty": "hard", "tags": ["treble", "expert"], "weight": 1 },
+    { "id": "tr-a5", "label": "A5", "answer": "A", "midi": 81, "clef": "treble", "staffPos": 10, "level": "expert", "difficulty": "hard", "tags": ["treble", "expert"], "weight": 1 },
+    { "id": "tr-b5", "label": "H5", "answer": "H", "midi": 83, "clef": "treble", "staffPos": 11, "level": "expert", "difficulty": "hard", "tags": ["treble", "expert"], "weight": 1 },
+    { "id": "ba-e2", "label": "E2", "answer": "E", "midi": 40, "clef": "bass", "staffPos": -7, "level": "expert", "difficulty": "hard", "tags": ["bass", "expert"], "weight": 1 },
+    { "id": "ba-d2", "label": "D2", "answer": "D", "midi": 38, "clef": "bass", "staffPos": -8, "level": "expert", "difficulty": "hard", "tags": ["bass", "expert"], "weight": 1 },
+    { "id": "ba-c2", "label": "C2", "answer": "C", "midi": 36, "clef": "bass", "staffPos": -9, "level": "expert", "difficulty": "hard", "tags": ["bass", "expert"], "weight": 1 },
+    { "id": "ba-g4", "label": "G4", "answer": "G", "midi": 67, "clef": "bass", "staffPos": 9, "level": "expert", "difficulty": "hard", "tags": ["bass", "expert"], "weight": 1 },
+    { "id": "ba-a4", "label": "A4", "answer": "A", "midi": 69, "clef": "bass", "staffPos": 10, "level": "expert", "difficulty": "hard", "tags": ["bass", "expert"], "weight": 1 },
+    { "id": "ba-b4", "label": "H4", "answer": "H", "midi": 71, "clef": "bass", "staffPos": 11, "level": "expert", "difficulty": "hard", "tags": ["bass", "expert"], "weight": 1 }
+  ]
+}

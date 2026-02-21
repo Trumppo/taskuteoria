@@ -4,7 +4,7 @@ import LevelNotice from "../components/LevelNotice.astro";
 ---
 
 <BaseLayout title="Pikavisa | TaskuTeoria" active="harjoittele" showNav={false}>
-  <section class="card">
+  <section class="card" data-level-section>
     <h1>Pikavisa</h1>
     <p>Viiden kysymyksen sekoitus nuoteista, rytmista, savellajeista ja kuuntelusta.</p>
     <p class="small" id="quiz-progress">Kysymys 1/5</p>
@@ -13,32 +13,73 @@ import LevelNotice from "../components/LevelNotice.astro";
 
   <LevelNotice />
 
-  <section class="card">
+  <section class="card" data-level-section>
     <h2 id="quiz-question">Ladataan...</h2>
     <p class="small" id="quiz-type"></p>
     <div class="grid" id="quiz-options"></div>
     <p class="small" id="quiz-feedback" aria-live="polite">Valitse vastaus.</p>
   </section>
 
-  <section class="card grid">
+  <section class="card grid" data-level-section>
     <button id="quiz-play" type="button" class="btn ghost">Soita tehtava</button>
     <button id="quiz-next" type="button" class="btn">Seuraava</button>
   </section>
 
   <script>
+    import { getLevel } from "../lib/level";
     import initPikavisa, { type QuizData } from "../lib/pages/pikavisa";
-    import noteDeck from "../content/decks/note-identification.json";
-    import listeningDeck from "../content/decks/listening-quiz.json";
-    import keyDeck from "../content/decks/key-signatures.json";
-    import rhythmDeck from "../content/decks/rhythm-values.json";
+    import notesBasic from "../content/decks/notes-basic.json";
+    import notesExtended from "../content/decks/notes-extended.json";
+    import notesExpert from "../content/decks/notes-expert.json";
+    import rhythmBeginner from "../content/decks/rhythm-beginner.json";
+    import rhythmIntermediate from "../content/decks/rhythm-intermediate.json";
+    import rhythmExpert from "../content/decks/rhythm-expert.json";
+    import keyBeginner from "../content/decks/key-signatures-beginner.json";
+    import keyIntermediate from "../content/decks/key-signatures-intermediate.json";
+    import keyExpert from "../content/decks/key-signatures-expert.json";
+    import listenBeginner from "../content/decks/listening-quiz-beginner.json";
+    import listenIntermediate from "../content/decks/listening-quiz-intermediate.json";
+    import listenExpert from "../content/decks/listening-quiz-expert.json";
 
-    const data: QuizData = {
-      notes: noteDeck.notes as QuizData["notes"],
-      intervals: listeningDeck.intervals as QuizData["intervals"],
-      chords: listeningDeck.chords as QuizData["chords"],
-      keyQuestions: keyDeck.questions as QuizData["keyQuestions"],
-      timeSignatures: rhythmDeck.timeSignatures as QuizData["timeSignatures"],
-    };
-    initPikavisa(data);
+    const level = getLevel();
+    const notePool = [...notesBasic.notes, ...notesExtended.notes, ...notesExpert.notes].filter(
+      (note) => (note.level ?? "beginner") === level,
+    );
+    const rhythmDecks = { beginner: rhythmBeginner, intermediate: rhythmIntermediate, expert: rhythmExpert };
+    const keyDecks = { beginner: keyBeginner, intermediate: keyIntermediate, expert: keyExpert };
+    const listenDecks = { beginner: listenBeginner, intermediate: listenIntermediate, expert: listenExpert };
+
+    const rhythmDeck = rhythmDecks[level];
+    const keyDeck = keyDecks[level];
+    const listenDeck = listenDecks[level];
+
+    const empty =
+      notePool.length === 0 ||
+      !rhythmDeck ||
+      rhythmDeck.timeSignatures.length === 0 ||
+      !keyDeck ||
+      keyDeck.questions.length === 0 ||
+      !listenDeck ||
+      listenDeck.intervals.length === 0 ||
+      listenDeck.chords.length === 0;
+
+    const emptyEl = document.getElementById("level-empty");
+    const sections = document.querySelectorAll("[data-level-section]");
+
+    if (empty) {
+      if (emptyEl) emptyEl.hidden = false;
+      sections.forEach((section) => {
+        if (section instanceof HTMLElement) section.hidden = true;
+      });
+    } else {
+      const data: QuizData = {
+        notes: notePool as QuizData["notes"],
+        intervals: listenDeck.intervals as QuizData["intervals"],
+        chords: listenDeck.chords as QuizData["chords"],
+        keyQuestions: keyDeck.questions as QuizData["keyQuestions"],
+        timeSignatures: rhythmDeck.timeSignatures as QuizData["timeSignatures"],
+      };
+      initPikavisa(data);
+    }
   </script>
 </BaseLayout>

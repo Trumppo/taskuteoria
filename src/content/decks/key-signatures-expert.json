@@ -1,0 +1,41 @@
+{
+  "title": "Sävellajit (asiantuntija)",
+  "questions": [
+    {
+      "id": "key-amaj-count",
+      "prompt": "Kuinka monta ylennystä on A-duurissa?",
+      "options": ["2", "3", "4"],
+      "correctIndex": 1
+    },
+    {
+      "id": "key-esmaj-count",
+      "prompt": "Kuinka monta alennusta on Es-duurissa?",
+      "options": ["2", "3", "4"],
+      "correctIndex": 1
+    },
+    {
+      "id": "key-fism-relative",
+      "prompt": "Mikä on fis-mollin rinnakkaissävellaji?",
+      "options": ["A-duuri", "E-duuri", "D-duuri"],
+      "correctIndex": 0
+    },
+    {
+      "id": "key-cism-relative",
+      "prompt": "Mikä on cis-mollin rinnakkaissävellaji?",
+      "options": ["E-duuri", "A-duuri", "H-duuri"],
+      "correctIndex": 0
+    },
+    {
+      "id": "key-asmaj-count",
+      "prompt": "Kuinka monta etumerkkiä on As-duurissa?",
+      "options": ["3", "4", "5"],
+      "correctIndex": 1
+    },
+    {
+      "id": "key-hmaj-count",
+      "prompt": "Kuinka monta etumerkkiä on H-duurissa?",
+      "options": ["4", "5", "6"],
+      "correctIndex": 1
+    }
+  ]
+}

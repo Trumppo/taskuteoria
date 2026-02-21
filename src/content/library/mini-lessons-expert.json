@@ -1,0 +1,46 @@
+[
+  {
+    "id": "mini-cadences",
+    "title": "Kadenssit nopeasti",
+    "summary": "Yleisimmat sointukulut ja niiden tunnelma.",
+    "questions": [
+      {
+        "prompt": "Mita tarkoittaa II–V–I?",
+        "options": ["Kadenssi", "Moodi", "Tahtilaji"],
+        "correctIndex": 0
+      },
+      {
+        "prompt": "Mika luo vahvan purun duurissa?",
+        "options": ["V–I", "IV–I", "II–IV"],
+        "correctIndex": 0
+      },
+      {
+        "prompt": "Mika on toonikan aste?",
+        "options": ["I", "III", "V"],
+        "correctIndex": 0
+      }
+    ]
+  },
+  {
+    "id": "mini-inversions",
+    "title": "Sointukäännökset",
+    "summary": "Käännökset vaihtavat soinnun alin aani.",
+    "questions": [
+      {
+        "prompt": "Mita tapahtuu ensimmäisessä kaannoksessa?",
+        "options": ["Terssi alimpana", "Kvintti alimpana", "Perusaani alimpana"],
+        "correctIndex": 0
+      },
+      {
+        "prompt": "Mita tapahtuu toisessa kaannoksessa?",
+        "options": ["Kvintti alimpana", "Terssi alimpana", "Perusaani alimpana"],
+        "correctIndex": 0
+      },
+      {
+        "prompt": "Mihin kaannos vaikuttaa?",
+        "options": ["Soinnin variin", "Tempoon", "Tahtilajiin"],
+        "correctIndex": 0
+      }
+    ]
+  }
+]

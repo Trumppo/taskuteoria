@@ -4,14 +4,14 @@ import LevelNotice from "../components/LevelNotice.astro";
 ---
 
 <BaseLayout title="Kuuntele | TaskuTeoria" active="kuuntele" showNav={false}>
-  <section class="card">
+  <section class="card" data-level-section>
     <h1>Kuuntelutehtavat</h1>
     <p>Tunnista kuulemasi intervalli tai sointu. Saat valittoman palautteen ja pisteet tallentuvat laitteelle.</p>
   </section>
 
   <LevelNotice />
 
-  <section class="card">
+  <section class="card" data-level-section>
     <h2 id="prompt">Kuuntele tehtava</h2>
     <p class="small" id="feedback" aria-live="polite">Paina "Soita tehtava".</p>
     <p class="small" id="interval-mode">Intervallitila: Melodinen</p>
@@ -22,25 +22,47 @@ import LevelNotice from "../components/LevelNotice.astro";
     </div>
   </section>
 
-  <section class="card">
+  <section class="card" data-level-section>
     <h3>Vastausvaihtoehdot</h3>
     <div class="grid" id="choices"></div>
     <p class="small" id="stats"></p>
   </section>
 
-  <section class="card grid">
+  <section class="card grid" data-level-section>
     <button class="btn ghost" id="metro" type="button">Metronomi</button>
     <button class="btn ghost" id="stop" type="button">Pysayta</button>
   </section>
 
   <script>
+    import { getLevel } from "../lib/level";
     import initKuuntele, { type QuizData } from "../lib/pages/kuuntele";
-    import quiz from "../content/decks/listening-quiz.json";
+    import listenBeginner from "../content/decks/listening-quiz-beginner.json";
+    import listenIntermediate from "../content/decks/listening-quiz-intermediate.json";
+    import listenExpert from "../content/decks/listening-quiz-expert.json";
 
-    const data: QuizData = {
-      intervals: quiz.intervals as QuizData["intervals"],
-      chords: quiz.chords as QuizData["chords"],
+    const decks = {
+      beginner: listenBeginner,
+      intermediate: listenIntermediate,
+      expert: listenExpert,
     };
-    initKuuntele(data);
+
+    const level = getLevel();
+    const deck = decks[level];
+    const empty = !deck || deck.intervals.length === 0 || deck.chords.length === 0;
+    const emptyEl = document.getElementById("level-empty");
+    const sections = document.querySelectorAll("[data-level-section]");
+
+    if (empty) {
+      if (emptyEl) emptyEl.hidden = false;
+      sections.forEach((section) => {
+        if (section instanceof HTMLElement) section.hidden = true;
+      });
+    } else {
+      const data: QuizData = {
+        intervals: deck.intervals as QuizData["intervals"],
+        chords: deck.chords as QuizData["chords"],
+      };
+      initKuuntele(data);
+    }
   </script>
 </BaseLayout>

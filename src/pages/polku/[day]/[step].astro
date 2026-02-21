@@ -2,9 +2,6 @@
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import LevelNotice from "../../../components/LevelNotice.astro";
 import learningPath from "../../../content/path/14-day.json";
-import keyDeck from "../../../content/decks/key-signatures.json";
-import flashcards from "../../../content/decks/flashcards.json";
-import cards from "../../../content/library/cards.json";
 import { withBase } from "../../../lib/base";
 
 export function getStaticPaths() {
@@ -42,7 +39,7 @@ const nextStep = day.steps[stepIndex + 1];
 
   {step.kind === "nuotit" && (
     <>
-      <section class="card">
+      <section class="card" data-level-section>
         <h2>Nuotit</h2>
         <p>Perusalue + laajennetut viivaston apuviivat. Vastaus annetaan heti ja harjoitus toimii seka diskantilla etta bassolla.</p>
         <p class="small" id="clef-label">Klaavi: -</p>
@@ -50,37 +47,53 @@ const nextStep = day.steps[stepIndex + 1];
         <p class="small" id="feedback" aria-live="polite">Aloita harjoitus.</p>
       </section>
 
-      <section class="card">
+      <section class="card" data-level-section>
         <div class="grid" id="choices"></div>
       </section>
 
-      <section class="card">
+      <section class="card" data-level-section>
         <button class="btn ghost" id="play-btn" type="button">Soita nuotti</button>
         <p class="small" id="stats"></p>
       </section>
 
       <script>
+        import { getLevel } from "../../../lib/level";
         import initNuotit, { type NuotitData } from "../../../lib/pages/nuotit";
         import notesBasic from "../../../content/decks/notes-basic.json";
         import notesExtended from "../../../content/decks/notes-extended.json";
+        import notesExpert from "../../../content/decks/notes-expert.json";
 
-        const data: NuotitData = {
-          notes: [...notesBasic.notes, ...notesExtended.notes] as NuotitData["notes"],
-        };
-        initNuotit(data);
+        const level = getLevel();
+        const allNotes = [...notesBasic.notes, ...notesExtended.notes, ...notesExpert.notes];
+        const pool = allNotes.filter((note) => (note.level ?? "beginner") === level);
+        const empty = pool.length === 0;
+        const emptyEl = document.getElementById("level-empty");
+        const sections = document.querySelectorAll("[data-level-section]");
+
+        if (empty) {
+          if (emptyEl) emptyEl.hidden = false;
+          sections.forEach((section) => {
+            if (section instanceof HTMLElement) section.hidden = true;
+          });
+        } else {
+          const data: NuotitData = {
+            notes: allNotes as NuotitData["notes"],
+          };
+          initNuotit(data);
+        }
       </script>
     </>
   )}
 
   {step.kind === "rytmi" && (
     <>
-      <section class="card">
+      <section class="card" data-level-section>
         <h2>Rytmi</h2>
         <p>Naputa metronomin mukana ja rakenna tahtia. Yksi osio kerrallaan, selkea fokus.</p>
         <p class="small" id="stats"></p>
       </section>
 
-      <section class="card">
+      <section class="card" data-level-section>
         <h3>Tap-harjoitus</h3>
         <p>Napauta tahtiin metronomin mukana. Harjoitus arpoo tahtilajin 4/4, 3/4 tai 6/8.</p>
         <p class="small" id="rhythm-sig">Tahtilaji: -</p>
@@ -93,7 +106,7 @@ const nextStep = day.steps[stepIndex + 1];
         </div>
       </section>
 
-      <section class="card">
+      <section class="card" data-level-section>
         <h3>Tahti drag & drop</h3>
         <p>Rakenna tahti niin, etta kokonaiskesto vastaa valittua tahtilajia.</p>
         <div class="grid" id="rhythm-palette"></div>
@@ -108,26 +121,46 @@ const nextStep = day.steps[stepIndex + 1];
       </section>
 
       <script>
+        import { getLevel } from "../../../lib/level";
         import initRytmi, { type RytmiData } from "../../../lib/pages/rytmi";
-        import rhythmDeck from "../../../content/decks/rhythm-values.json";
+        import rhythmBeginner from "../../../content/decks/rhythm-beginner.json";
+        import rhythmIntermediate from "../../../content/decks/rhythm-intermediate.json";
+        import rhythmExpert from "../../../content/decks/rhythm-expert.json";
 
-        const data: RytmiData = {
-          rhythmDeck: rhythmDeck as RytmiData["rhythmDeck"],
+        const decks = {
+          beginner: rhythmBeginner,
+          intermediate: rhythmIntermediate,
+          expert: rhythmExpert,
         };
-        initRytmi(data);
+
+        const level = getLevel();
+        const deck = decks[level];
+        const empty = !deck || deck.pieces.length === 0 || deck.timeSignatures.length === 0;
+        const emptyEl = document.getElementById("level-empty");
+        const sections = document.querySelectorAll("[data-level-section]");
+
+        if (empty) {
+          if (emptyEl) emptyEl.hidden = false;
+          sections.forEach((section) => {
+            if (section instanceof HTMLElement) section.hidden = true;
+          });
+        } else {
+          const data: RytmiData = { rhythmDeck: deck as RytmiData["rhythmDeck"] };
+          initRytmi(data);
+        }
       </script>
     </>
   )}
 
   {step.kind === "savellajit" && (
     <>
-      <section class="card">
-        <h2>{keyDeck.title}</h2>
+      <section class="card" data-level-section>
+        <h2>Sävellajit</h2>
         <p>Nopeat kysymykset savellajeista. Yksi kysymys kerrallaan.</p>
         <p class="small" id="stats"></p>
       </section>
 
-      <section class="card">
+      <section class="card" data-level-section>
         <p id="key-question"></p>
         <div class="grid" id="key-options"></div>
         <p class="small" id="key-feedback" aria-live="polite">Valitse vastaus.</p>
@@ -135,20 +168,40 @@ const nextStep = day.steps[stepIndex + 1];
       </section>
 
       <script>
+        import { getLevel } from "../../../lib/level";
         import initSavellajit, { type SavellajitData } from "../../../lib/pages/savellajit";
-        import keyDeck from "../../../content/decks/key-signatures.json";
+        import keyBeginner from "../../../content/decks/key-signatures-beginner.json";
+        import keyIntermediate from "../../../content/decks/key-signatures-intermediate.json";
+        import keyExpert from "../../../content/decks/key-signatures-expert.json";
 
-        const data: SavellajitData = {
-          keyDeck: keyDeck as SavellajitData["keyDeck"],
+        const decks = {
+          beginner: keyBeginner,
+          intermediate: keyIntermediate,
+          expert: keyExpert,
         };
-        initSavellajit(data);
+
+        const level = getLevel();
+        const deck = decks[level];
+        const empty = !deck || deck.questions.length === 0;
+        const emptyEl = document.getElementById("level-empty");
+        const sections = document.querySelectorAll("[data-level-section]");
+
+        if (empty) {
+          if (emptyEl) emptyEl.hidden = false;
+          sections.forEach((section) => {
+            if (section instanceof HTMLElement) section.hidden = true;
+          });
+        } else {
+          const data: SavellajitData = { keyDeck: deck as SavellajitData["keyDeck"] };
+          initSavellajit(data);
+        }
       </script>
     </>
   )}
 
   {step.kind === "kuuntele" && (
     <>
-      <section class="card">
+      <section class="card" data-level-section>
         <h2 id="prompt">Kuuntele tehtava</h2>
         <p class="small" id="feedback" aria-live="polite">Paina "Soita tehtava".</p>
         <p class="small" id="interval-mode">Intervallitila: Melodinen</p>
@@ -162,56 +215,100 @@ const nextStep = day.steps[stepIndex + 1];
         <p class="small" id="stats"></p>
       </section>
 
-      <section class="card">
+      <section class="card" data-level-section>
         <div class="grid" id="choices"></div>
       </section>
 
       <script>
+        import { getLevel } from "../../../lib/level";
         import initKuuntele, { type QuizData } from "../../../lib/pages/kuuntele";
-        import quiz from "../../../content/decks/listening-quiz.json";
+        import listenBeginner from "../../../content/decks/listening-quiz-beginner.json";
+        import listenIntermediate from "../../../content/decks/listening-quiz-intermediate.json";
+        import listenExpert from "../../../content/decks/listening-quiz-expert.json";
 
-        const data: QuizData = {
-          intervals: quiz.intervals as QuizData["intervals"],
-          chords: quiz.chords as QuizData["chords"],
+        const decks = {
+          beginner: listenBeginner,
+          intermediate: listenIntermediate,
+          expert: listenExpert,
         };
-        initKuuntele(data);
+
+        const level = getLevel();
+        const deck = decks[level];
+        const empty = !deck || deck.intervals.length === 0 || deck.chords.length === 0;
+        const emptyEl = document.getElementById("level-empty");
+        const sections = document.querySelectorAll("[data-level-section]");
+
+        if (empty) {
+          if (emptyEl) emptyEl.hidden = false;
+          sections.forEach((section) => {
+            if (section instanceof HTMLElement) section.hidden = true;
+          });
+        } else {
+          const data: QuizData = {
+            intervals: deck.intervals as QuizData["intervals"],
+            chords: deck.chords as QuizData["chords"],
+          };
+          initKuuntele(data);
+        }
       </script>
     </>
   )}
 
   {step.kind === "kortit" && (
     <>
-      <section class="card">
+      <section class="card" data-level-section>
         <h2>Flashcards</h2>
         <p>Tiesin / En tiennyt -malli. Toistovaly tallennetaan localStorageen.</p>
         <p class="small" id="status" aria-live="polite"></p>
-        <h3 id="front">{flashcards[0].front}</h3>
-        <p id="back" class="small" hidden>{flashcards[0].back}</p>
+        <h3 id="front">Ladataan...</h3>
+        <p id="back" class="small" hidden></p>
       </section>
 
-      <section class="card grid">
+      <section class="card grid" data-level-section>
         <button id="show" type="button" class="btn ghost">Nayta vastaus</button>
         <button id="knew" type="button" class="btn">Tiesin</button>
         <button id="didnt" type="button" class="btn ghost">En tiennyt</button>
       </section>
 
       <script>
+        import { getLevel } from "../../../lib/level";
         import initKortit from "../../../lib/pages/kortit";
-        import deck from "../../../content/decks/flashcards.json";
+        import cardsBeginner from "../../../content/decks/flashcards-beginner.json";
+        import cardsIntermediate from "../../../content/decks/flashcards-intermediate.json";
+        import cardsExpert from "../../../content/decks/flashcards-expert.json";
 
-        initKortit(deck);
+        const decks = {
+          beginner: cardsBeginner,
+          intermediate: cardsIntermediate,
+          expert: cardsExpert,
+        };
+
+        const level = getLevel();
+        const deck = decks[level];
+        const empty = !deck || deck.length === 0;
+        const emptyEl = document.getElementById("level-empty");
+        const sections = document.querySelectorAll("[data-level-section]");
+
+        if (empty) {
+          if (emptyEl) emptyEl.hidden = false;
+          sections.forEach((section) => {
+            if (section instanceof HTMLElement) section.hidden = true;
+          });
+        } else {
+          initKortit(deck);
+        }
       </script>
     </>
   )}
 
   {step.kind === "pikavisa" && (
     <>
-      <section class="card">
+      <section class="card" data-level-section>
         <h2>Pikavisa</h2>
         <p>Valitse oikea vastaus. 5 kysymysta, nopea rytmi.</p>
       </section>
 
-      <section class="card">
+      <section class="card" data-level-section>
         <p class="small" id="quiz-progress"></p>
         <h2 id="quiz-question">Ladataan...</h2>
         <p class="small" id="quiz-type"></p>
@@ -219,45 +316,81 @@ const nextStep = day.steps[stepIndex + 1];
         <p class="small" id="quiz-feedback" aria-live="polite">Valitse vastaus.</p>
       </section>
 
-      <section class="card grid">
+      <section class="card grid" data-level-section>
         <button class="btn" id="quiz-play" type="button">Soita tehtava</button>
         <button class="btn ghost" id="quiz-next" type="button">Seuraava</button>
       </section>
 
       <script>
+        import { getLevel } from "../../../lib/level";
         import initPikavisa, { type QuizData } from "../../../lib/pages/pikavisa";
-        import noteDeck from "../../../content/decks/note-identification.json";
-        import listeningDeck from "../../../content/decks/listening-quiz.json";
-        import keyDeck from "../../../content/decks/key-signatures.json";
-        import rhythmDeck from "../../../content/decks/rhythm-values.json";
+        import notesBasic from "../../../content/decks/notes-basic.json";
+        import notesExtended from "../../../content/decks/notes-extended.json";
+        import notesExpert from "../../../content/decks/notes-expert.json";
+        import rhythmBeginner from "../../../content/decks/rhythm-beginner.json";
+        import rhythmIntermediate from "../../../content/decks/rhythm-intermediate.json";
+        import rhythmExpert from "../../../content/decks/rhythm-expert.json";
+        import keyBeginner from "../../../content/decks/key-signatures-beginner.json";
+        import keyIntermediate from "../../../content/decks/key-signatures-intermediate.json";
+        import keyExpert from "../../../content/decks/key-signatures-expert.json";
+        import listenBeginner from "../../../content/decks/listening-quiz-beginner.json";
+        import listenIntermediate from "../../../content/decks/listening-quiz-intermediate.json";
+        import listenExpert from "../../../content/decks/listening-quiz-expert.json";
 
-        const data: QuizData = {
-          notes: noteDeck.notes as QuizData["notes"],
-          intervals: listeningDeck.intervals as QuizData["intervals"],
-          chords: listeningDeck.chords as QuizData["chords"],
-          keyQuestions: keyDeck.questions as QuizData["keyQuestions"],
-          timeSignatures: rhythmDeck.timeSignatures as QuizData["timeSignatures"],
-        };
-        initPikavisa(data);
+        const level = getLevel();
+        const notePool = [...notesBasic.notes, ...notesExtended.notes, ...notesExpert.notes].filter(
+          (note) => (note.level ?? "beginner") === level,
+        );
+        const rhythmDecks = { beginner: rhythmBeginner, intermediate: rhythmIntermediate, expert: rhythmExpert };
+        const keyDecks = { beginner: keyBeginner, intermediate: keyIntermediate, expert: keyExpert };
+        const listenDecks = { beginner: listenBeginner, intermediate: listenIntermediate, expert: listenExpert };
+
+        const rhythmDeck = rhythmDecks[level];
+        const keyDeck = keyDecks[level];
+        const listenDeck = listenDecks[level];
+
+        const empty =
+          notePool.length === 0 ||
+          !rhythmDeck ||
+          rhythmDeck.timeSignatures.length === 0 ||
+          !keyDeck ||
+          keyDeck.questions.length === 0 ||
+          !listenDeck ||
+          listenDeck.intervals.length === 0 ||
+          listenDeck.chords.length === 0;
+
+        const emptyEl = document.getElementById("level-empty");
+        const sections = document.querySelectorAll("[data-level-section]");
+
+        if (empty) {
+          if (emptyEl) emptyEl.hidden = false;
+          sections.forEach((section) => {
+            if (section instanceof HTMLElement) section.hidden = true;
+          });
+        } else {
+          const data: QuizData = {
+            notes: notePool as QuizData["notes"],
+            intervals: listenDeck.intervals as QuizData["intervals"],
+            chords: listenDeck.chords as QuizData["chords"],
+            keyQuestions: keyDeck.questions as QuizData["keyQuestions"],
+            timeSignatures: rhythmDeck.timeSignatures as QuizData["timeSignatures"],
+          };
+          initPikavisa(data);
+        }
       </script>
     </>
   )}
 
   {step.kind === "kirjasto" && (
     <>
-      <section class="card">
+      <section class="card" data-level-section>
         <h2>Teoriakirjasto</h2>
         <p>Mini-opetukset 30-90 sekunnin paloissa + 3 valitonta harjoitusta per aihe.</p>
       </section>
 
-      {cards.map((card) => (
-        <section class="card">
-          <h3>{card.title}</h3>
-          <p>{card.body}</p>
-        </section>
-      ))}
+      <div id="library-cards" data-level-section></div>
 
-      <section class="card">
+      <section class="card" data-level-section>
         <h3>Mini-opetus + 3 harjoitusta</h3>
         <p class="small" id="mini-meta">Lyhyt kertaus ja nopeat kysymykset.</p>
         <h4 id="mini-title"></h4>
@@ -265,22 +398,67 @@ const nextStep = day.steps[stepIndex + 1];
         <p class="small" id="mini-progress" aria-live="polite"></p>
       </section>
 
-      <section class="card">
+      <section class="card" data-level-section>
         <p id="mini-question"></p>
         <div class="grid" id="mini-options"></div>
         <p class="small" id="mini-feedback" aria-live="polite"></p>
       </section>
 
-      <section class="card grid">
+      <section class="card grid" data-level-section>
         <button class="btn ghost" id="mini-next-question" type="button">Seuraava kysymys</button>
         <button class="btn" id="mini-next-lesson" type="button">Seuraava mini-opetus</button>
       </section>
 
       <script>
+        import { getLevel } from "../../../lib/level";
         import initKirjasto from "../../../lib/pages/kirjasto";
-        import miniLessons from "../../../content/library/mini-lessons.json";
+        import cardsBeginner from "../../../content/library/cards-beginner.json";
+        import cardsIntermediate from "../../../content/library/cards-intermediate.json";
+        import cardsExpert from "../../../content/library/cards-expert.json";
+        import lessonsBeginner from "../../../content/library/mini-lessons-beginner.json";
+        import lessonsIntermediate from "../../../content/library/mini-lessons-intermediate.json";
+        import lessonsExpert from "../../../content/library/mini-lessons-expert.json";
 
-        initKirjasto(miniLessons);
+        const level = getLevel();
+        const cardsByLevel = {
+          beginner: cardsBeginner,
+          intermediate: cardsIntermediate,
+          expert: cardsExpert,
+        };
+        const lessonsByLevel = {
+          beginner: lessonsBeginner,
+          intermediate: lessonsIntermediate,
+          expert: lessonsExpert,
+        };
+
+        const cards = cardsByLevel[level];
+        const lessons = lessonsByLevel[level];
+        const empty = !cards || cards.length === 0 || !lessons || lessons.length === 0;
+        const emptyEl = document.getElementById("level-empty");
+        const sections = document.querySelectorAll("[data-level-section]");
+
+        if (empty) {
+          if (emptyEl) emptyEl.hidden = false;
+          sections.forEach((section) => {
+            if (section instanceof HTMLElement) section.hidden = true;
+          });
+        } else {
+          const container = document.getElementById("library-cards");
+          if (container) {
+            cards.forEach((card) => {
+              const section = document.createElement("section");
+              section.className = "card";
+              const title = document.createElement("h3");
+              title.textContent = card.title;
+              const body = document.createElement("p");
+              body.textContent = card.body;
+              section.appendChild(title);
+              section.appendChild(body);
+              container.appendChild(section);
+            });
+          }
+          initKirjasto(lessons);
+        }
       </script>
     </>
   )}

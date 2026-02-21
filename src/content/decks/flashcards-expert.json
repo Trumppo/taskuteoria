@@ -1,0 +1,8 @@
+[
+  { "id": "e1", "front": "Mika on II–V–I?", "back": "Kadenssi: asteet II, V ja I." },
+  { "id": "e2", "front": "Mika on modaalinen asteikko?", "back": "Duuri- tai molliasteikon moodi." },
+  { "id": "e3", "front": "Mika on vahennetty sointu?", "back": "Pieni terssi + vahennetty kvintti." },
+  { "id": "e4", "front": "Mita tarkoittaa subdominantti?", "back": "IV-asteen sointu." },
+  { "id": "e5", "front": "Mita tarkoittaa toonika?", "back": "Savelajin perussavel ja I-aste." },
+  { "id": "e6", "front": "Mika on sekstisointu?", "back": "Kolmisoinnun kaannos, jossa terssi on alimpana." }
+]

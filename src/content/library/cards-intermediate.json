@@ -1,0 +1,17 @@
+[
+  {
+    "id": "lib-syncope",
+    "title": "Synkooppi",
+    "body": "Synkoopissa korostus osuu heikolle iskulle tai jaon valiin."
+  },
+  {
+    "id": "lib-accidentals",
+    "title": "Etumerkit",
+    "body": "Etumerkit kertovat savellajin ylennykset ja alennukset jo nuotin alussa."
+  },
+  {
+    "id": "lib-triads",
+    "title": "Kolmisoinnut",
+    "body": "Duuri- ja mollisoinnut muodostuvat perusaanesta, terssista ja kvintista."
+  }
+]

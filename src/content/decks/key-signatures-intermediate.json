@@ -1,0 +1,41 @@
+{
+  "title": "Sävellajit (edistynyt)",
+  "questions": [
+    {
+      "id": "key-dmaj-count",
+      "prompt": "Kuinka monta ylennystä on D-duurissa?",
+      "options": ["1", "2", "3"],
+      "correctIndex": 1
+    },
+    {
+      "id": "key-bmaj-count",
+      "prompt": "Kuinka monta alennusta on B-duurissa?",
+      "options": ["1", "2", "3"],
+      "correctIndex": 1
+    },
+    {
+      "id": "key-emin-relative",
+      "prompt": "Mikä on e-mollin rinnakkaissävellaji?",
+      "options": ["G-duuri", "D-duuri", "C-duuri"],
+      "correctIndex": 0
+    },
+    {
+      "id": "key-dmin-relative",
+      "prompt": "Mikä on d-mollin rinnakkaissävellaji?",
+      "options": ["F-duuri", "C-duuri", "B-duuri"],
+      "correctIndex": 0
+    },
+    {
+      "id": "key-emin-count",
+      "prompt": "Kuinka monta etumerkkiä on e-mollissa?",
+      "options": ["0", "1", "2"],
+      "correctIndex": 1
+    },
+    {
+      "id": "key-dmin-count",
+      "prompt": "Kuinka monta etumerkkiä on d-mollissa?",
+      "options": ["0", "1", "2"],
+      "correctIndex": 1
+    }
+  ]
+}
